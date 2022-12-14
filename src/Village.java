@@ -1,12 +1,15 @@
 import io.jbotsim.core.Node;
 import io.jbotsim.ui.icons.Icons;
 
+import java.util.List;
+
 public class Village extends Node {
     String name;
+    List<Node> villages;
 
-    public Village(String name) {
-        super();
+    public Village(String name, List<Node> villages) {
         this.name = name;
+        this.villages = villages;
     }
 
     @Override
