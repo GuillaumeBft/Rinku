@@ -20,8 +20,8 @@ public class Village extends Node {
     public void onStart() {
         this.setIcon(System.getProperty("user.dir") + "/hutte.png");
         setIconSize(16);
-        setCommunicationRange(120);
-        setSensingRange(60);
+        setCommunicationRange(0);
+        setSensingRange(0);
     }
 
     @Override

@@ -3,6 +3,7 @@ import io.jbotsim.core.Node;
 import io.jbotsim.core.Point;
 import io.jbotsim.ui.icons.Icons;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,13 +11,15 @@ public class Robot extends WaypointNode {
     Point spawn;
     List<Node> villages;
     List<Node> itinerary;
+    List<Message> backpack;
 
     public Robot(List<Node> itinerary){
         this.itinerary = itinerary;
+        this.backpack = new ArrayList<>();
         setIcon(Icons.ROBOT);
         setIconSize(16);
-        setCommunicationRange(120);
-        setSensingRange(30);
+        setCommunicationRange(0);
+        setSensingRange(0);
     }
 
     @Override
@@ -32,16 +35,6 @@ public class Robot extends WaypointNode {
         for(Node n : itinerary){
             addDestination(n.getLocation());
         }
-    }
-
-    @Override
-    public void onSensingIn(Node node) {
-        // Le robot sent qqc...
-    }
-
-    @Override
-    public void onMessage(Message message) {
-        // Le robot a reçu un message...
     }
 
     @Override
