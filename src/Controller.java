@@ -19,7 +19,7 @@ public class Controller {
         villages = new ArrayList<>();
         itinerary = computeItinerary(villages);
         addData();
-        
+
         topology.start();
         new JViewer(topology);
     }

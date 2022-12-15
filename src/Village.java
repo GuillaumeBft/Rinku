@@ -1,6 +1,5 @@
 import io.jbotsim.core.Message;
 import io.jbotsim.core.Node;
-import io.jbotsim.ui.icons.Icons;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,12 +7,12 @@ import java.util.List;
 public class Village extends Node {
     String name;
     List<Node> villages;
-    List<Message> mailbox;
+    List<Message> postbox;
 
     public Village(String name, List<Node> villages) {
         this.name = name;
         this.villages = villages;
-        mailbox = new ArrayList<>();
+        postbox = new ArrayList<>();
     }
 
     @Override
@@ -31,12 +30,20 @@ public class Village extends Node {
         }
     }
 
-    public void newMessage(){
-        mailbox.add(new Message("cc c nou"));
+    private void newMessage(){
+        postbox.add(new Message("cc c nou"));
+    }
+
+    public void clearPostBox(){
+        postbox.clear();
+    }
+
+    public List<Message> getPostbox() {
+        return postbox;
     }
 
     @Override
     public String toString() {
-        return super.toString() + " " + name + ", msg : " + mailbox.size();
+        return super.toString() + " " + name + ", msg : " + postbox.size();
     }
 }

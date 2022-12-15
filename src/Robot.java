@@ -25,7 +25,7 @@ public class Robot extends WaypointNode {
     @Override
     public void onStart() {
         spawn = getLocation();
-        super.setSpeed(15);
+        super.setSpeed(5);
         villages = getTopology().getNodes().stream().filter(n -> n instanceof Village).map(n -> (Node) n).collect(Collectors.toList());
         System.out.println(villages.toString());
         startVisitRound();
@@ -43,5 +43,23 @@ public class Robot extends WaypointNode {
         if(getLocation().equals(itinerary.get(itinerary.size()-1).getLocation())){
             startVisitRound();
         }
+
+        //recuperer les messages
+        for(Node v : villages){
+            if(getLocation().equals(v.getLocation())){
+                collectPostbox((Village) v);
+                break;
+            }
+        }
+    }
+
+    public void collectPostbox(Village village){
+        backpack.addAll(village.getPostbox());
+        village.clearPostBox();
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + ", in my backpack : " + backpack.size();
     }
 }
