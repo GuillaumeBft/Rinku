@@ -1,3 +1,4 @@
+import io.jbotsim.core.Message;
 import io.jbotsim.core.Node;
 import io.jbotsim.core.Point;
 
@@ -32,13 +33,18 @@ public class Village extends Node {
         }
     }
 
+    @Override
+    public void onMessage(Message message) {
+        System.out.println("Being " + name + " i got new message from " + ((Village)((Mail)message.getContent()).sender).name + " : " + ((Mail)message.getContent()).content);
+    }
+
     private void newMail(){
         List<Node> potentialDestinations = villages.values().stream().filter(node -> !node.equals(this)).toList();
         //System.out.println("I am : " + name + ", dest : " + potentialDestinaions.toString());
         Random rand = new Random();
         Node randomElement = potentialDestinations.get(rand.nextInt(potentialDestinations.size()));
 
-        postbox.add(new Mail(this, randomElement, "cc c nou"));
+        postbox.add(new Mail(this, randomElement, "Hello from : " + name + " to : " + ((Village) randomElement).getName()));
     }
 
     public void clearPostBox(){
@@ -47,6 +53,10 @@ public class Village extends Node {
 
     public List<Mail> getPostbox() {
         return postbox;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
