@@ -1,4 +1,3 @@
-import io.jbotsim.core.Message;
 import io.jbotsim.core.Node;
 import io.jbotsim.core.Point;
 import io.jbotsim.ui.icons.Icons;
@@ -6,13 +5,12 @@ import io.jbotsim.ui.icons.Icons;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Robot extends WaypointNode {
     Point spawn;
     Map<Point, Node> villages;
     List<Node> itinerary;
-    List<Message> backpack;
+    List<Mail> backpack;
 
     public Robot(List<Node> itinerary, Controller controller){
         this.itinerary = itinerary;
@@ -45,7 +43,7 @@ public class Robot extends WaypointNode {
             startVisitRound();
         }
 
-        //recuperer les messages
+        //recuperer les courriers
         collectPostbox((Village) villages.get(getLocation()));
     }
 
