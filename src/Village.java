@@ -1,17 +1,19 @@
 import io.jbotsim.core.Message;
 import io.jbotsim.core.Node;
+import io.jbotsim.core.Point;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Village extends Node {
     String name;
-    List<Node> villages;
+    Map<Point, Node> villages;
     List<Message> postbox;
 
-    public Village(String name, List<Node> villages) {
+    public Village(String name, Controller controller) {
         this.name = name;
-        this.villages = villages;
+        this.villages = controller.villages;
         postbox = new ArrayList<>();
     }
 

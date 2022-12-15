@@ -5,17 +5,20 @@ import io.jbotsim.ui.icons.Icons;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Robot extends WaypointNode {
     Point spawn;
-    List<Node> villages;
+    Map<Point, Node> villages;
     List<Node> itinerary;
     List<Message> backpack;
 
-    public Robot(List<Node> itinerary){
+    public Robot(List<Node> itinerary, Controller controller){
         this.itinerary = itinerary;
         this.backpack = new ArrayList<>();
+        this.villages = controller.villages;
+
         setIcon(Icons.ROBOT);
         setIconSize(16);
         setCommunicationRange(0);
@@ -26,8 +29,6 @@ public class Robot extends WaypointNode {
     public void onStart() {
         spawn = getLocation();
         super.setSpeed(5);
-        villages = getTopology().getNodes().stream().filter(n -> n instanceof Village).map(n -> (Node) n).collect(Collectors.toList());
-        System.out.println(villages.toString());
         startVisitRound();
     }
 
@@ -45,12 +46,7 @@ public class Robot extends WaypointNode {
         }
 
         //recuperer les messages
-        for(Node v : villages){
-            if(getLocation().equals(v.getLocation())){
-                collectPostbox((Village) v);
-                break;
-            }
-        }
+        collectPostbox((Village) villages.get(getLocation()));
     }
 
     public void collectPostbox(Village village){
