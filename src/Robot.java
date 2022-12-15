@@ -11,10 +11,10 @@ import java.util.stream.Collectors;
 public class Robot extends WaypointNode {
     Point spawn;
     Map<Point, Node> villages;
-    List<Node> itinerary;
+    Itinerary itinerary;
     List<Mail> backpack;
 
-    public Robot(List<Node> itinerary, Controller controller){
+    public Robot(Itinerary itinerary, Controller controller){
         this.itinerary = itinerary;
         this.backpack = new ArrayList<>();
         this.villages = controller.villages;
@@ -28,20 +28,24 @@ public class Robot extends WaypointNode {
     @Override
     public void onStart() {
         spawn = getLocation();
-        super.setSpeed(5);
+        super.setSpeed(15);
         startVisitRound();
     }
 
     public void startVisitRound(){
-        for(Node n : itinerary){
-            addDestination(n.getLocation());
+        int cpt = 0;
+        for (int i = itinerary.getStart();cpt < itinerary.getSize(); i++) {
+            cpt++;
+            i %= itinerary.getSize();
+            addDestination(itinerary.getSteps().get(i).getLocation());
         }
     }
 
     @Override
     public void onArrival() {
         // Le robot est arrivé à sa destination
-        if(getLocation().equals(itinerary.get(itinerary.size()-1).getLocation())){
+        if(getLocation().equals(itinerary.getSteps().get(itinerary.getEnd()).getLocation())){
+            System.out.println("NEW ROUND");
             startVisitRound();
         }
 

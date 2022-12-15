@@ -12,7 +12,7 @@ import java.util.Map;
 public class Controller {
     private Topology topology;
     Map<Point, Node> villages;
-    List<Node> itinerary;
+    Itinerary itinerary;
 
     public Controller() {
         topology = new Topology();
@@ -20,23 +20,22 @@ public class Controller {
         topology.setTimeUnit(100);
 
         villages = new HashMap<>();
-        itinerary = new ArrayList<>();
-        addData();
+        addDataVillages();
         computeItinerary();
+        addDataRobots();
 
         topology.start();
         new JViewer(topology);
     }
 
     public void computeItinerary(){
-        itinerary.clear();
+        itinerary = new Itinerary(new ArrayList<>(), 0);
         for (Point p : villages.keySet()) {
-            itinerary.add(villages.get(p));
+            itinerary.getSteps().add(villages.get(p));
         }
     }
 
-    public void addData(){
-        //VILLAGES
+    public void addDataVillages(){
         Node v1 = new Village("Signy-Le-Petit", this);
         villages.put(new Point(20, 200), v1);
         Node v2 = new Village("Cussac", this);
@@ -49,9 +48,10 @@ public class Controller {
         for (Point p : villages.keySet()) {
             topology.addNode(p.getX(), p.getY(), villages.get(p));
         }
+    }
 
-        //ROBOTS
+    public void addDataRobots(){
         topology.addNode(100, 100, new Robot(itinerary, this));
-        // tp.addNode(100, 100, new Robot());
+        topology.addNode(100, 100, new Robot(new Itinerary(itinerary.getSteps(), itinerary.getStart() + itinerary.getSize()/2), this));
     }
 }
