@@ -55,6 +55,6 @@ public class Controller implements CommandListener {
 
     public void addDataRobots(){
         topology.addNode(100, 100, new Robot(itinerary));
-        //topology.addNode(100, 100, new Robot(new Itinerary(itinerary.getSteps(), itinerary.getStart() + itinerary.getSize()/2)));
+        topology.addNode(100, 100, new Robot(new Itinerary(itinerary.getSteps(), itinerary.getStart() + itinerary.getSize()/2)));
     }
 }
