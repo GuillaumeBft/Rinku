@@ -46,7 +46,8 @@ public class Controller implements CommandListener {
             points.add(p);
         }
         Algorithm algorithm = new Algorithm(points);
-        itinerary = algorithm.noAlgo();
+        itinerary = algorithm.randomInsertion();
+        System.out.println("Distance of the itinerary is " + Algorithm.getItineraryDistance(itinerary));
     }
 
     public void addDataVillages(){
@@ -54,6 +55,7 @@ public class Controller implements CommandListener {
         topology.addNode(20, 70, new Village("Cussac"));
         topology.addNode(100, 200, new Village("Croissy"));
         topology.addNode(250, 50, new Village("Pessac"));
+        topology.addNode(250, 250, new Village("Croatie"));
     }
 
     public void addDataRobots(){

@@ -16,11 +16,11 @@ public class Algorithm {
         return new Itinerary(points, 0);
     }
 
-    public List<Point> nearestNeighbor() {
-        List<Point> itinerary = new ArrayList<>();
+    public Itinerary nearestNeighbor() {
+        List<Point> steps = new ArrayList<>();
         Point curr = points.get(0);
         points.remove(0);
-        itinerary.add(curr);
+        steps.add(curr);
         double minDist = Double.MAX_VALUE;
         int minIndex = -1;
 
@@ -33,22 +33,23 @@ public class Algorithm {
                 }
             }
 
-            itinerary.add(points.get(minIndex));
+            steps.add(points.get(minIndex));
             curr = points.get(minIndex);
             points.remove(minIndex);
             minDist = Double.MAX_VALUE;
         }
 
-        return itinerary;
+        return new Itinerary(steps, 0);
     }
 
-    public List<Point> randomInsertion() {
-        List<Point> itinerary = new ArrayList<>();
-        itinerary.add(points.get(0));
+    public Itinerary randomInsertion() {
+        // Il faut au moins 5 points pour utiliser cet algo
+        List<Point> steps = new ArrayList<>();
+        steps.add(points.get(0));
         points.remove(0);
-        itinerary.add(points.get(1));
+        steps.add(points.get(1));
         points.remove(1);
-        itinerary.add(points.get(2));
+        steps.add(points.get(2));
         points.remove(2);
 
         Random rand = new Random();
@@ -58,8 +59,8 @@ public class Algorithm {
 
             double elongation = Double.MAX_VALUE;
             Point selectedPoint = null;
-            for (Point p : itinerary) {
-                Point next = itinerary.get(itinerary.indexOf(p) % (itinerary.size() - 1) + 1);
+            for (Point p : steps) {
+                Point next = steps.get(steps.indexOf(p) % (steps.size() - 1) + 1);
                 double initDistance = p.distance(next);
                 double newDistance = p.distance(pointToAdd) + pointToAdd.distance(next);
                 if (newDistance - initDistance < elongation) {
@@ -68,11 +69,11 @@ public class Algorithm {
                 }
             }
 
-            int nextIndex = itinerary.indexOf(selectedPoint) % (itinerary.size() - 1) + 1;
-            itinerary.add(nextIndex, pointToAdd);
+            int nextIndex = steps.indexOf(selectedPoint) % (steps.size() - 1) + 1;
+            steps.add(nextIndex, pointToAdd);
             points.remove(pointToAdd);
         }
-        return itinerary;
+        return new Itinerary(steps, 0);
     }
 
     public List<Point> twoApprox() {
@@ -120,10 +121,11 @@ public class Algorithm {
         return mst;
     }
 
-    static public double getItineraryDistance(List<Point> itinerary) {
+    static public double getItineraryDistance(Itinerary itinerary) {
+        List<Point> steps = itinerary.getSteps();
         double distance = 0;
-        for (Point p : itinerary) {
-            Point next = itinerary.get(itinerary.indexOf(p) % (itinerary.size() - 1) + 1);
+        for (Point p : steps) {
+            Point next = steps.get(steps.indexOf(p) % (steps.size() - 1) + 1);
             distance += p.distance(next);
         }
         return distance;
