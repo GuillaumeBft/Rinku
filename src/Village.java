@@ -10,16 +10,15 @@ import java.util.Random;
 public class Village extends Node {
     String name;
     Map<Point, Node> villages;
-    List<Mail> postbox;
+    List<Mail> postbox = new ArrayList<>();
 
-    public Village(String name, Controller controller) {
-        this.name = name;
-        this.villages = controller.villages;
-        postbox = new ArrayList<>();
+    public Village() {
+        this("DefaultCity");
     }
 
-    @Override
-    public void onStart() {
+    public Village(String name) {
+        this.name = name;
+        villages = Controller.villages;
         this.setIcon(System.getProperty("user.dir") + "/hutte.png");
         setIconSize(16);
         setCommunicationRange(0);

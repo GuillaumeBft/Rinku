@@ -14,10 +14,10 @@ public class Robot extends WaypointNode {
     Itinerary itinerary;
     List<Mail> backpack;
 
-    public Robot(Itinerary itinerary, Controller controller){
+    public Robot(Itinerary itinerary){
         this.itinerary = itinerary;
         this.backpack = new ArrayList<>();
-        this.villages = controller.villages;
+        this.villages = Controller.villages;
 
         setIcon(Icons.ROBOT);
         setIconSize(16);
@@ -45,7 +45,7 @@ public class Robot extends WaypointNode {
     public void onArrival() {
         // Le robot est arrivé à sa destination
         if(getLocation().equals(itinerary.getSteps().get(itinerary.getEnd()).getLocation())){
-            System.out.println("NEW ROUND");
+            System.out.println("NEW ROUND AS ROBOT N°" + getID());
             startVisitRound();
         }
 
@@ -70,6 +70,6 @@ public class Robot extends WaypointNode {
 
     @Override
     public String toString() {
-        return super.toString() + ", in my backpack : " + backpack.size();
+        return "Robot n°" + super.toString() + ", in my backpack : " + backpack.size() + " messages";
     }
 }

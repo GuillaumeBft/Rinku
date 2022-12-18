@@ -26,4 +26,9 @@ public class Itinerary {
     public int getSize() {
         return steps.size();
     }
+
+    @Override
+    public String toString() {
+        return getSteps().toString();
+    }
 }
