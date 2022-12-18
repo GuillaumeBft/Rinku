@@ -37,14 +37,14 @@ public class Robot extends WaypointNode {
         for (int i = itinerary.getStart();cpt < itinerary.getSize(); i++) {
             cpt++;
             i %= itinerary.getSize();
-            addDestination(itinerary.getSteps().get(i).getLocation());
+            addDestination(itinerary.getSteps().get(i));
         }
     }
 
     @Override
     public void onArrival() {
         // Le robot est arrivé à sa destination
-        if(getLocation().equals(itinerary.getSteps().get(itinerary.getEnd()).getLocation())){
+        if(getLocation().equals(itinerary.getSteps().get(itinerary.getEnd()))){
             System.out.println("NEW ROUND AS ROBOT N°" + getID());
             startVisitRound();
         }

@@ -12,6 +12,8 @@ public class Village extends Node {
     Map<Point, Node> villages;
     List<Mail> postbox = new ArrayList<>();
 
+
+    // JBotSim a besoin d'un contructeur sans paramètres pour créer des noeuds à la souris
     public Village() {
         this("DefaultCity");
     }
@@ -39,11 +41,10 @@ public class Village extends Node {
 
     private void newMail(){
         List<Node> potentialDestinations = villages.values().stream().filter(node -> !node.equals(this)).toList();
-        //System.out.println("I am : " + name + ", dest : " + potentialDestinaions.toString());
         Random rand = new Random();
         Node randomElement = potentialDestinations.get(rand.nextInt(potentialDestinations.size()));
-
-        postbox.add(new Mail(this, randomElement, "Hello from : " + name + " to : " + ((Village) randomElement).getName()));
+        postbox.add(new Mail(this, randomElement, "Hello, my name is Brandom, I'm from " + name
+                + " and this message is for my girlfriend Randomia who lives in " + ((Village) randomElement).getName()));
     }
 
     public void clearPostBox(){

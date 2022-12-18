@@ -1,17 +1,18 @@
 import io.jbotsim.core.Node;
+import io.jbotsim.core.Point;
 
 import java.util.List;
 
 public class Itinerary {
-    private List<Node> steps;
+    private List<Point> steps;
     private int start;
 
-    public Itinerary(List<Node> steps, int start) {
+    public Itinerary(List<Point> steps, int start) {
         this.steps = steps;
         this.start = start;
     }
 
-    public List<Node> getSteps() {
+    public List<Point> getSteps() {
         return steps;
     }
 

@@ -6,6 +6,7 @@ import io.jbotsim.ui.JViewer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Controller implements CommandListener {
@@ -40,10 +41,12 @@ public class Controller implements CommandListener {
     }
 
     public static void computeItinerary(){
-        itinerary = new Itinerary(new ArrayList<>(), 0);
+        List<Point> points = new ArrayList<>();
         for (Point p : villages.keySet()) {
-            itinerary.getSteps().add(villages.get(p));
+            points.add(p);
         }
+        Algorithm algorithm = new Algorithm(points);
+        itinerary = algorithm.noAlgo();
     }
 
     public void addDataVillages(){
@@ -55,6 +58,6 @@ public class Controller implements CommandListener {
 
     public void addDataRobots(){
         topology.addNode(100, 100, new Robot(itinerary));
-        topology.addNode(100, 100, new Robot(new Itinerary(itinerary.getSteps(), itinerary.getStart() + itinerary.getSize()/2)));
+        //topology.addNode(100, 100, new Robot(new Itinerary(itinerary.getSteps(), itinerary.getStart() + itinerary.getSize()/2)));
     }
 }
