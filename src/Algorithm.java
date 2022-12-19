@@ -4,6 +4,7 @@ import io.jbotsim.core.Node;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class Algorithm {
 
@@ -84,26 +85,28 @@ public class Algorithm {
     }
 
     public Itinerary bruteForce() {
-        StringBuilder firstPermutation = new StringBuilder();
-        for (Node n : nodes) {
-            firstPermutation.append(n.getID());
-        }
-        System.out.println(findAllpermutations(firstPermutation.toString()));
+        List<List<Node>> permutations = findAllpermutations(nodes);
+        System.out.println(permutations);
         return null;
     }
 
-    public static List<String> findAllpermutations(String str) {
-        List<String> permutations = new ArrayList<>();
-        permutation("", str, permutations);
+    public static List<List<Node>> findAllpermutations(List<Node> str) {
+        List<List<Node>> permutations = new ArrayList<>();
+        permutation(new ArrayList<Node>(), str, permutations);
         return permutations;
     }
 
-    private static void permutation(String prefix, String str, List<String> permutations) {
-        int n = str.length();
+    private static void permutation(List<Node> prefix, List<Node> str, List<List<Node>> permutations) {
+        int n = str.size();
         if (n == 0) permutations.add(prefix);
         else {
-            for (int i = 0; i < n; i++)
-                permutation(prefix + str.charAt(i), str.substring(0, i) + str.substring(i+1, n), permutations);
+            for (int i = 0; i < n; i++) {
+                List<Node> newPrefix = new ArrayList<>(prefix);
+                prefix.add(str.get(i));
+                List<Node> newStr = new ArrayList<>(str.subList(0, i));
+                newStr.addAll(str.subList(i+1, n));
+                permutation(newPrefix, newStr, permutations);
+            }
         }
     }
 
