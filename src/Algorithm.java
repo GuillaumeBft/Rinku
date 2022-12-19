@@ -1,4 +1,5 @@
 import io.jbotsim.core.Point;
+import io.jbotsim.core.Node;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +8,15 @@ import java.util.Random;
 public class Algorithm {
 
     protected List<Point> points;
+    protected List<Node> nodes;
 
-    public Algorithm(List<Point> points) {
+    public Algorithm(List<Node> nodes) {
+        List<Point> points = new ArrayList<>();
+        for (Node n : nodes) {
+            points.add(n.getLocation());
+        }
         this.points = points;
+        this.nodes = nodes;
     }
 
     public Itinerary noAlgo() {
@@ -76,53 +83,31 @@ public class Algorithm {
         return new Itinerary(steps, 0);
     }
 
-    public List<Point> twoApprox() {
-        List<Point> itinerary = new ArrayList<>();
-        List<Node<Point>> mst = Prim();
-        Node<Point> root = mst.get(0);
-        boolean[] isVisited = new boolean[points.size()];
-        Node<Point> current = root;
-        points.remove(root.getData());
-
-        dfsTwoApprox(current, isVisited);
-
-        return itinerary;
-    }
-
-    private void dfsTwoApprox(Node<Point> current, boolean[] isVisited) {
-
-    }
-
-    public List<Node<Point>> Prim() {
-        // not tested
-        List<Node<Point>> mst = new ArrayList<>();
-        List<Point> usedPoints = new ArrayList<>();
-        Point initial = points.get(0);
-        points.remove(initial);
-        mst.add(new Node(initial, new Node(initial)));
-
-        while (!points.isEmpty()) {
-            double minDist = Double.MAX_VALUE;
-            Node<Point> selectedNode = null;
-            Point selectedPoint = null;
-            for (Node<Point> node : mst) {
-                for (Point p : points) {
-                    if (node.getData().distance(p) < minDist) {
-                        minDist = node.getData().distance(p);
-                        selectedNode = node;
-                        selectedPoint = p;
-                    }
-                }
-            }
-            selectedNode.addChild(selectedPoint);
-            points.remove(selectedPoint);
+    public Itinerary bruteForce() {
+        StringBuilder firstPermutation = new StringBuilder();
+        for (Node n : nodes) {
+            firstPermutation.append(n.getID());
         }
-
-        return mst;
+        System.out.println(findAllpermutations(firstPermutation.toString()));
+        return null;
     }
 
-    static public double getItineraryDistance(Itinerary itinerary) {
-        List<Point> steps = itinerary.getSteps();
+    public static List<String> findAllpermutations(String str) {
+        List<String> permutations = new ArrayList<>();
+        permutation("", str, permutations);
+        return permutations;
+    }
+
+    private static void permutation(String prefix, String str, List<String> permutations) {
+        int n = str.length();
+        if (n == 0) permutations.add(prefix);
+        else {
+            for (int i = 0; i < n; i++)
+                permutation(prefix + str.charAt(i), str.substring(0, i) + str.substring(i+1, n), permutations);
+        }
+    }
+
+    static public double getDistance(List<Point> steps) {
         double distance = 0;
         for (Point p : steps) {
             Point next = steps.get(steps.indexOf(p) % (steps.size() - 1) + 1);

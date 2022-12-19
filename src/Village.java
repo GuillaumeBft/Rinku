@@ -28,15 +28,17 @@ public class Village extends Node {
     }
 
     @Override
-    public void onClock() {
-        if (Math.random() < 0.005) {
-            newMail();
+    public void onStart() {
+        if (name == "DefaultCity") {
+            name += getID();
         }
     }
 
     @Override
-    public void onMessage(Message message) {
-        System.out.println("Being " + name + " i got new message from " + ((Village)((Mail)message.getContent()).sender).name + " : " + ((Mail)message.getContent()).content);
+    public void onClock() {
+        if (Math.random() < 0.005) {
+            newMail();
+        }
     }
 
     private void newMail(){
@@ -45,6 +47,11 @@ public class Village extends Node {
         Node randomElement = potentialDestinations.get(rand.nextInt(potentialDestinations.size()));
         postbox.add(new Mail(this, randomElement, "Hello, my name is Brandom, I'm from " + name
                 + " and I want to Wizz my crush Randomia who lives in " + ((Village) randomElement).getName()));
+    }
+
+    @Override
+    public void onMessage(Message message) {
+        System.out.println("Being " + name + " i got new message from " + ((Village)((Mail)message.getContent()).sender).name + " : " + ((Mail)message.getContent()).content);
     }
 
     public void clearPostBox(){

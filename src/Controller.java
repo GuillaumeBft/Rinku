@@ -2,6 +2,7 @@ import io.jbotsim.core.Node;
 import io.jbotsim.core.Point;
 import io.jbotsim.core.Topology;
 import io.jbotsim.core.event.CommandListener;
+import io.jbotsim.ui.JTopology;
 import io.jbotsim.ui.JViewer;
 
 import java.util.ArrayList;
@@ -35,19 +36,16 @@ public class Controller implements CommandListener {
                     villages.put(n.getLocation(), n);
                 }
             }
-            computeItinerary();
+            computeItinerary(topology.getNodes());
             addDataRobots();
         }
     }
 
-    public static void computeItinerary(){
-        List<Point> points = new ArrayList<>();
-        for (Point p : villages.keySet()) {
-            points.add(p);
-        }
-        Algorithm algorithm = new Algorithm(points);
+    public static void computeItinerary(List<Node> nodes){
+        Algorithm algorithm = new Algorithm(nodes);
+        algorithm.bruteForce();
         itinerary = algorithm.randomInsertion();
-        System.out.println("Distance of the itinerary is " + Algorithm.getItineraryDistance(itinerary));
+        System.out.println("Distance of the itinerary is " + Algorithm.getDistance(itinerary.getSteps()));
     }
 
     public void addDataVillages(){
