@@ -56,15 +56,9 @@ public class Controller implements CommandListener {
     public static void computeItinerary(List<Node> nodes, String selectedAlgo){
         Algorithm algorithm = new Algorithm(nodes);
         switch (selectedAlgo) {
-            case RANDOM_INSERT:
-                itinerary = algorithm.randomInsertion();
-                break;
-            case BRUTEFORCE:
-                itinerary = algorithm.bruteForce();
-                break;
-            default:
-                itinerary = algorithm.noAlgo();
-                break;
+            case RANDOM_INSERT -> itinerary = algorithm.randomInsertion();
+            case BRUTEFORCE -> itinerary = algorithm.bruteForce();
+            default -> itinerary = algorithm.noAlgo();
         }
         System.out.println("Distance of the itinerary made by " + selectedAlgo + " is " + Algorithm.getDistance(itinerary.getSteps()));
     }
