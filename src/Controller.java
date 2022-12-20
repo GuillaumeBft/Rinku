@@ -26,6 +26,7 @@ public class Controller implements CommandListener {
         selectedAlgo = "";
 
         villages = new HashMap<>();
+        //addVillagesTestSpeed();
         addVillages();
 
         new JViewer(topology);
@@ -69,6 +70,12 @@ public class Controller implements CommandListener {
         topology.addNode(100, 200, new Village("Croissy"));
         topology.addNode(250, 50, new Village("Pessac"));
         topology.addNode(250, 250, new Village("Croatie"));
+    }
+
+    public void addVillagesTestSpeed(){
+        topology.addNode(20, 100, new Village("Libourne"));
+        topology.addNode(20, 200, new Village("Capri"));
+        topology.addNode(20, 300, new Village("Grenoble"));
     }
 
     public void addRobots(){

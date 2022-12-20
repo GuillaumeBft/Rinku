@@ -128,9 +128,10 @@ public class Algorithm {
 
     static public double getDistance(List<Point> steps) {
         double distance = 0;
-        for (Point p : steps) {
-            Point next = steps.get(steps.indexOf(p) % (steps.size() - 1) + 1);
-            distance += p.distance(next);
+        int size = steps.size();
+        for (int i = 0; i < size; i++) {
+            Point next = steps.get((i + 1) % size);
+            distance += steps.get(i).distance(next);
         }
         return distance;
     }

@@ -13,6 +13,7 @@ public class Robot extends WaypointNode {
     Map<Point, Node> villages;
     Itinerary itinerary;
     List<Mail> backpack;
+    int time;
 
     public Robot(Itinerary itinerary){
         this.itinerary = itinerary;
@@ -28,7 +29,7 @@ public class Robot extends WaypointNode {
     @Override
     public void onStart() {
         spawn = getLocation();
-        super.setSpeed(15);
+        super.setSpeed(10);
         startVisitRound();
     }
 
@@ -39,13 +40,14 @@ public class Robot extends WaypointNode {
             i %= itinerary.getSize();
             addDestination(itinerary.getSteps().get(i));
         }
+        time = getTime();
     }
 
     @Override
     public void onArrival() {
         // Le robot est arrivé à sa destination
         if(getLocation().equals(itinerary.getSteps().get(itinerary.getEnd()))){
-            System.out.println("NEW ROUND AS ROBOT N°" + getID());
+            System.out.println("Robot n°" + getID() + " : I've made a complete round in " + (getTime() - time));
             startVisitRound();
         }
 
