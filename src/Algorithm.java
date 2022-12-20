@@ -1,21 +1,21 @@
 import io.jbotsim.core.Point;
 import io.jbotsim.core.Node;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Algorithm {
 
     protected List<Point> points;
     protected List<Node> nodes;
+    Map<Integer, Point> locations;
 
     public Algorithm(List<Node> nodes) {
-        List<Point> points = new ArrayList<>();
+        points = new ArrayList<>();
+        locations = new HashMap<>();
         for (Node n : nodes) {
             points.add(n.getLocation());
+            locations.put(n.getID(), n.getLocation());
         }
-        this.points = points;
         this.nodes = nodes;
     }
 
@@ -88,8 +88,18 @@ public class Algorithm {
         for (Node n : nodes) {
             firstPermutation.append(n.getID());
         }
-        System.out.println(findAllpermutations(firstPermutation.toString()));
-        return null;
+        List<String> permutations = findAllpermutations(firstPermutation.toString());
+        double min = Double.MAX_VALUE;
+        List<Point> bestSteps = permutationToSteps(firstPermutation.toString());
+        for (String p : permutations) {
+            List<Point> steps = permutationToSteps(p);
+            double distance = getDistance(steps);
+            if (distance < min) {
+                min = distance;
+                bestSteps = steps;
+            }
+        }
+        return new Itinerary(bestSteps, 0);
     }
 
     public static List<String> findAllpermutations(String str) {
@@ -105,6 +115,15 @@ public class Algorithm {
             for (int i = 0; i < n; i++)
                 permutation(prefix + str.charAt(i), str.substring(0, i) + str.substring(i+1, n), permutations);
         }
+    }
+
+    public List<Point> permutationToSteps(String permutation) {
+        List<Point> steps = new ArrayList<>();
+        for (char charId : permutation.toCharArray()) {
+            int id = Character.getNumericValue(charId);
+            steps.add(locations.get(id));
+        }
+        return steps;
     }
 
     static public double getDistance(List<Point> steps) {

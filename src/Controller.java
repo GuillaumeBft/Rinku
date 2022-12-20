@@ -44,7 +44,7 @@ public class Controller implements CommandListener {
     public static void computeItinerary(List<Node> nodes){
         Algorithm algorithm = new Algorithm(nodes);
         algorithm.bruteForce();
-        itinerary = algorithm.randomInsertion();
+        itinerary = algorithm.bruteForce();
         System.out.println("Distance of the itinerary is " + Algorithm.getDistance(itinerary.getSteps()));
     }
 
