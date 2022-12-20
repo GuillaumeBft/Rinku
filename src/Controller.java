@@ -7,13 +7,15 @@ import io.jbotsim.ui.JViewer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Controller implements CommandListener {
     public static final String START = "Start execution";
     public static final String BRUTEFORCE = "Set Bruteforce algo";
     public static final String RANDOM_INSERT = "Set Random Insertion algo";
+    public static final String DISPLAY_MAXTIME = "Display max comm. times";
     private Topology topology;
-    static Map<Point, Node> villages;
+    static Map<Point, Village> villages;
     static Itinerary itinerary;
 
     private String selectedAlgo;
@@ -26,11 +28,12 @@ public class Controller implements CommandListener {
         selectedAlgo = "";
 
         villages = new HashMap<>();
-        //addVillagesTestSpeed();
+        //addVillagesTest();
         addVillages();
 
         new JViewer(topology);
         topology.addCommandListener(this);
+        topology.addCommand(DISPLAY_MAXTIME);
         topology.addCommand(RANDOM_INSERT);
         topology.addCommand(BRUTEFORCE);
     }
@@ -40,11 +43,19 @@ public class Controller implements CommandListener {
         if (command.equals(START)) {
             for (Node n : topology.getNodes()) {
                 if (n instanceof Village) {
-                    villages.put(n.getLocation(), n);
+                    villages.put(n.getLocation(), (Village) n);
                 }
             }
             computeItinerary(topology.getNodes(), selectedAlgo);
             addRobots();
+        } else if (command.equals(DISPLAY_MAXTIME)) {
+            for (Village v : villages.values()) {
+                System.out.println("Max times to deliver message from " + v.getName() + " to ");
+                for (Village v2 : villages.values().stream().filter(village -> !village.equals(v)).collect(Collectors.toList())) {
+                    System.out.println("    " + v2.getName() + " : "
+                            + v.getMaxCommunicationTime(v2) + " ticks");
+                }
+            }
         } else if (command.equals(BRUTEFORCE)) {
             selectedAlgo = BRUTEFORCE;
             System.out.println("Bruteforce optimal selection algorithm has been selected for the compute of the robot path.");
@@ -61,7 +72,7 @@ public class Controller implements CommandListener {
             case BRUTEFORCE -> itinerary = algorithm.bruteForce();
             default -> itinerary = algorithm.noAlgo();
         }
-        System.out.println("Distance of the itinerary made by " + selectedAlgo + " is " + Algorithm.getDistance(itinerary.getSteps()));
+        System.out.println("Distance of the itinerary made by " + selectedAlgo + " is " + Algorithm.getRoundTotalDistance(itinerary.getSteps()));
     }
 
     public void addVillages(){
@@ -72,7 +83,7 @@ public class Controller implements CommandListener {
         topology.addNode(250, 250, new Village("Croatie"));
     }
 
-    public void addVillagesTestSpeed(){
+    public void addVillagesTest(){
         topology.addNode(20, 100, new Village("Libourne"));
         topology.addNode(20, 200, new Village("Capri"));
         topology.addNode(20, 300, new Village("Grenoble"));

@@ -9,8 +9,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Robot extends WaypointNode {
+    final static int SPEED = 10;
     Point spawn;
-    Map<Point, Node> villages;
+    Map<Point, Village> villages;
     Itinerary itinerary;
     List<Mail> backpack;
     int time;
@@ -29,7 +30,7 @@ public class Robot extends WaypointNode {
     @Override
     public void onStart() {
         spawn = getLocation();
-        super.setSpeed(10);
+        super.setSpeed(SPEED);
         startVisitRound();
     }
 
@@ -51,7 +52,7 @@ public class Robot extends WaypointNode {
             startVisitRound();
         }
 
-        Village current = (Village) villages.get(getLocation());
+        Village current = villages.get(getLocation());
 
         //recuperer les courriers
         collectPostbox(current);

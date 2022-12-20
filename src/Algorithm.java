@@ -93,7 +93,7 @@ public class Algorithm {
         List<Point> bestSteps = permutationToSteps(firstPermutation.toString());
         for (String p : permutations) {
             List<Point> steps = permutationToSteps(p);
-            double distance = getDistance(steps);
+            double distance = getRoundTotalDistance(steps);
             if (distance < min) {
                 min = distance;
                 bestSteps = steps;
@@ -126,13 +126,29 @@ public class Algorithm {
         return steps;
     }
 
-    static public double getDistance(List<Point> steps) {
+    static public double getRoundTotalDistance(List<Point> steps) {
         double distance = 0;
         int size = steps.size();
         for (int i = 0; i < size; i++) {
             Point next = steps.get((i + 1) % size);
             distance += steps.get(i).distance(next);
         }
+        return distance;
+    }
+
+    static public double getDistanceThroughPath(List<Point> steps, Village start, Village end) {
+        double distance = 0;
+        int size = steps.size();
+        int startIndex = steps.indexOf(start.getLocation());
+        int endIndex = steps.indexOf(end.getLocation());
+        int i = startIndex;
+        Point next = steps.get((i + 1) % size);
+        do {
+            distance += steps.get(i).distance(next);
+            i = (i + 1) % size;
+            next = steps.get((i + 1) % size);
+        } while (i != endIndex);
+
         return distance;
     }
 }

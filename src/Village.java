@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class Village extends Node {
     String name;
-    Map<Point, Node> villages;
+    Map<Point, Village> villages;
     List<Mail> postbox = new ArrayList<>();
 
 
@@ -42,11 +42,11 @@ public class Village extends Node {
     }
 
     private void newMail(){
-        List<Node> potentialDestinations = villages.values().stream().filter(node -> !node.equals(this)).toList();
+        List<Village> potentialDestinations = villages.values().stream().filter(node -> !node.equals(this)).toList();
         Random rand = new Random();
-        Node randomElement = potentialDestinations.get(rand.nextInt(potentialDestinations.size()));
+        Village randomElement = potentialDestinations.get(rand.nextInt(potentialDestinations.size()));
         postbox.add(new Mail(this, randomElement, "Hello, my name is Brandom, I'm from " + name
-                + " and I want to wizz my crush Randomia who lives in " + ((Village) randomElement).getName()));
+                + " and I want to wizz my crush Randomia who lives in " + (randomElement).getName()));
     }
 
     @Override
@@ -57,7 +57,9 @@ public class Village extends Node {
     public int getMaxCommunicationTime(Village village) {
         if (village.equals(this)) { return 0; }
         Itinerary itinerary = Controller.itinerary;
-        return 0;
+        double maxTime = Algorithm.getRoundTotalDistance(itinerary.getSteps()) * 2
+                - Algorithm.getDistanceThroughPath(itinerary.getSteps(), village, this);
+        return (int) maxTime / Robot.SPEED;
     }
 
     public void clearPostBox(){
