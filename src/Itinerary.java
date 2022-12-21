@@ -28,6 +28,10 @@ public class Itinerary {
         return steps.size();
     }
 
+    public void addStep(Point step){
+        steps.add(step);
+    }
+
     @Override
     public String toString() {
         return getSteps().toString();

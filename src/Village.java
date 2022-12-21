@@ -57,7 +57,8 @@ public class Village extends Node {
 
     public int getMaxCommunicationTime(Village village) {
         if (village.equals(this)) { return 0; }
-        Itinerary itinerary = Controller.itinerary;
+        //TODO a adapter au plusieurs itineraires
+        Itinerary itinerary = Controller.itineraries.get(0);
         double maxTime = Algorithm.getRoundTotalDistance(itinerary.getSteps()) * 2
                 - Algorithm.getDistanceThroughPath(itinerary.getSteps(), village, this);
         return (int) maxTime / Robot.SPEED;

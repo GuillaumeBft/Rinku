@@ -10,6 +10,9 @@ import java.util.stream.Collectors;
 
 public class Robot extends WaypointNode {
     final static int SPEED = 10;
+    public final static int SPAWN_POINT_X = 100;
+    public final static int SPAWN_POINT_Y = 100;
+
     Point spawn;
     Map<Point, Village> villages;
     Itinerary itinerary;
@@ -32,6 +35,7 @@ public class Robot extends WaypointNode {
         spawn = getLocation();
         super.setSpeed(SPEED);
         startVisitRound();
+        System.out.println("my itinerary is : " + itinerary.toString());
     }
 
     public void startVisitRound(){

@@ -151,4 +151,23 @@ public class Algorithm {
 
         return distance;
     }
+
+    public List<Itinerary> VRP(int nbRobots) {
+        List<Itinerary> itineraries = new ArrayList<>();
+        int nbPointsForRobot = points.size() / nbRobots; //+1 pour un robot s'il y a un reste
+        Point spawnRobot = new Point(Robot.SPAWN_POINT_X, Robot.SPAWN_POINT_Y);
+
+        //V1 juste repartition des points dans l'ordre
+        Itinerary itGeneral = new Itinerary(points, 0);
+        for(int i = 0; i < nbRobots; i++){
+            Itinerary itRobot = new Itinerary(itGeneral.getSteps()
+                    .subList(i * nbPointsForRobot, i * nbPointsForRobot + nbPointsForRobot), 0);
+            itineraries.add(itRobot);
+        }
+
+        //itineraries.get(0).addStep(spawnRobot);
+
+
+        return itineraries;
+    }
 }

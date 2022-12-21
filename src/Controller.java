@@ -13,10 +13,11 @@ public class Controller implements CommandListener {
     public static final String START = "Start execution";
     public static final String BRUTEFORCE = "Set Bruteforce algo";
     public static final String RANDOM_INSERT = "Set Random Insertion algo";
+    public static final String VRP = "Set VRP algo";
     public static final String DISPLAY_MAXTIME = "Display max comm. times";
     private Topology topology;
     static Map<Point, Village> villages;
-    static Itinerary itinerary;
+    static List<Itinerary> itineraries;
 
     private String selectedAlgo;
 
@@ -35,6 +36,7 @@ public class Controller implements CommandListener {
         topology.addCommandListener(this);
         topology.addCommand(DISPLAY_MAXTIME);
         topology.addCommand(RANDOM_INSERT);
+        topology.addCommand(VRP);
         topology.addCommand(BRUTEFORCE);
     }
 
@@ -47,7 +49,15 @@ public class Controller implements CommandListener {
                 }
             }
             computeItinerary(topology.getNodes(), selectedAlgo);
-            addRobots();
+            if(selectedAlgo.equals(VRP)){
+                int nbRobots = 2;
+                int nbPointsForRobot = topology.getNodes().size() / nbRobots;
+                //pas du tout dynamique la frr
+                topology.addNode(100, 100, new Robot(new Itinerary(itineraries.get(0).getSteps(), 0)));
+                topology.addNode(100, 100, new Robot(new Itinerary(itineraries.get(1).getSteps(), 0)));
+            } else {
+                addRobots();
+            }
         } else if (command.equals(DISPLAY_MAXTIME)) {
             for (Village v : villages.values()) {
                 System.out.println("Max times to deliver message from " + v.getName() + " to ");
@@ -62,24 +72,30 @@ public class Controller implements CommandListener {
         } else if (command.equals(RANDOM_INSERT)) {
             selectedAlgo = RANDOM_INSERT;
             System.out.println("Random insertion algorithm has been selected for the compute of the robot path.");
+        } else if (command.equals(VRP)) {
+            selectedAlgo = VRP;
+            System.out.println("VRP algorithm has been selected for the compute of the robot path.");
         }
     }
 
     public static void computeItinerary(List<Node> nodes, String selectedAlgo){
         Algorithm algorithm = new Algorithm(nodes);
         switch (selectedAlgo) {
-            case RANDOM_INSERT :
-                itinerary = algorithm.randomInsertion();
+            case RANDOM_INSERT:
+                itineraries.add(algorithm.randomInsertion());
                 break;
-            case BRUTEFORCE :
-                itinerary = algorithm.bruteForce();
+            case BRUTEFORCE:
+                itineraries.add(algorithm.bruteForce());
+                break;
+            case VRP:
+                itineraries = algorithm.VRP(2);
                 break;
             default:
                 algorithm.noAlgo();
                 break;
-
         }
-        System.out.println("Distance of the itinerary made by " + selectedAlgo + " is " + Algorithm.getRoundTotalDistance(itinerary.getSteps()));
+        //TODO l'adapter pour qu'il prenne tous les itineraires quand y'en a plusieurs pour le VRP
+        //System.out.println("Distance of the itinerary made by " + selectedAlgo + " is " + Algorithm.getRoundTotalDistance(itineraries.get(0).getSteps()));
     }
 
     public void addVillages(){
@@ -97,7 +113,8 @@ public class Controller implements CommandListener {
     }
 
     public void addRobots(){
-        topology.addNode(100, 100, new Robot(itinerary));
-        topology.addNode(100, 100, new Robot(new Itinerary(itinerary.getSteps(), itinerary.getStart() + itinerary.getSize()/2)));
+        Itinerary itinerary = itineraries.get(0);
+        topology.addNode(Robot.SPAWN_POINT_X, Robot.SPAWN_POINT_Y, new Robot(itinerary));
+        topology.addNode(Robot.SPAWN_POINT_X, Robot.SPAWN_POINT_Y, new Robot(new Itinerary(itinerary.getSteps(), itinerary.getStart() + itinerary.getSize()/2)));
     }
 }
