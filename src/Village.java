@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class Village extends Node {
     String name;
@@ -42,7 +43,7 @@ public class Village extends Node {
     }
 
     private void newMail(){
-        List<Village> potentialDestinations = villages.values().stream().filter(node -> !node.equals(this)).toList();
+        List<Village> potentialDestinations = villages.values().stream().filter(node -> !node.equals(this)).collect(Collectors.toList());
         Random rand = new Random();
         Village randomElement = potentialDestinations.get(rand.nextInt(potentialDestinations.size()));
         postbox.add(new Mail(this, randomElement, "Hello, my name is Brandom, I'm from " + name
