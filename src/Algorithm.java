@@ -151,4 +151,21 @@ public class Algorithm {
 
         return distance;
     }
+
+    static public double getDistanceBetweenTwoFurthestRobots(List<Point> steps, List<Robot> robots) {
+        if (robots.size() == 1) { return getRoundTotalDistance(steps); }
+        int size = robots.size();
+        double max = 0;
+        double currDistance;
+        for (int i = 0; i < size; i++) {
+            Robot nextRobot = robots.get((i + 1) % size);
+            Village currStart = (Village) Controller.topology.getNodes().get(robots.get(i).getItinerary().getStart());
+            Village nextStart = (Village) Controller.topology.getNodes().get(nextRobot.getItinerary().getStart());
+            currDistance = getDistanceThroughPath(steps, currStart, nextStart);
+            if (currDistance > max) {
+                max = currDistance;
+            }
+        }
+        return max;
+    }
 }

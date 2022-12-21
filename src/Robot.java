@@ -71,6 +71,10 @@ public class Robot extends WaypointNode {
         village.clearPostBox();
     }
 
+    public Itinerary getItinerary() {
+        return itinerary;
+    }
+
     @Override
     public String toString() {
         return "Robot n°" + super.toString() + ", in my backpack : " + backpack.size() + " messages";

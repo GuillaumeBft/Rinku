@@ -4,6 +4,7 @@ import io.jbotsim.core.Topology;
 import io.jbotsim.core.event.CommandListener;
 import io.jbotsim.ui.JViewer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,7 @@ public class Controller implements CommandListener {
     public static final String BRUTEFORCE = "Set Bruteforce algo";
     public static final String RANDOM_INSERT = "Set Random Insertion algo";
     public static final String DISPLAY_MAXTIME = "Display max comm. times";
-    private Topology topology;
+    public static Topology topology;
     static Map<Point, Village> villages;
     static Itinerary itinerary;
 
@@ -48,6 +49,14 @@ public class Controller implements CommandListener {
             }
             computeItinerary(topology.getNodes(), selectedAlgo);
             addRobots();
+
+            List<Robot> robots = new ArrayList<>();
+            for (Node n : topology.getNodes()){
+                if (n instanceof Robot) {
+                    robots.add((Robot) n);
+                }
+            }
+            System.out.println("MAX DISTANCE BETWEEN 2 ROBOTS : " + Algorithm.getDistanceBetweenTwoFurthestRobots(itinerary.getSteps(), robots));
         } else if (command.equals(DISPLAY_MAXTIME)) {
             for (Village v : villages.values()) {
                 System.out.println("Max times to deliver message from " + v.getName() + " to ");
@@ -75,7 +84,7 @@ public class Controller implements CommandListener {
                 itinerary = algorithm.bruteForce();
                 break;
             default:
-                algorithm.noAlgo();
+                itinerary = algorithm.noAlgo();
                 break;
 
         }
@@ -98,6 +107,6 @@ public class Controller implements CommandListener {
 
     public void addRobots(){
         topology.addNode(100, 100, new Robot(itinerary));
-        topology.addNode(100, 100, new Robot(new Itinerary(itinerary.getSteps(), itinerary.getStart() + itinerary.getSize()/2)));
+        //topology.addNode(100, 100, new Robot(new Itinerary(itinerary.getSteps(), itinerary.getStart() + itinerary.getSize()/2)));
     }
 }
