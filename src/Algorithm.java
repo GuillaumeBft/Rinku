@@ -160,12 +160,12 @@ public class Algorithm {
         //V1 juste repartition des points dans l'ordre
         Itinerary itGeneral = new Itinerary(points, 0);
         for(int i = 0; i < nbRobots; i++){
-            Itinerary itRobot = new Itinerary(itGeneral.getSteps()
-                    .subList(i * nbPointsForRobot, i * nbPointsForRobot + nbPointsForRobot), 0);
+            List<Point> itRobotSteps = new ArrayList<>(itGeneral.getSteps()
+                    .subList(i * nbPointsForRobot, i * nbPointsForRobot + nbPointsForRobot));
+            Itinerary itRobot = new Itinerary(itRobotSteps, 0);
+            itRobot.addStep(spawnRobot);
             itineraries.add(itRobot);
         }
-
-        //itineraries.get(0).addStep(spawnRobot);
 
 
         return itineraries;
