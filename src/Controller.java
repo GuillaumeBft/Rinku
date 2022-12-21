@@ -15,7 +15,7 @@ public class Controller implements CommandListener {
     public static final String RANDOM_INSERT = "Set Random Insertion algo";
     public static final String VRP = "Set VRP algo";
     public static final String DISPLAY_MAXTIME = "Display max comm. times";
-    private Topology topology;
+    public static Topology topology;
     static Map<Point, Village> villages;
     static List<Itinerary> itineraries;
 
