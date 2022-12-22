@@ -180,9 +180,11 @@ public class Algorithm {
 
         //V1 juste repartition des points dans l'ordre
         Itinerary itGeneral = new Itinerary(points, 0);
+        //V2 utilisation d'un vrai algo
+        //Itinerary itGeneral = randomInsertion();
 
         List<List<Point>> partitionList = Lists.partition(itGeneral.getSteps(), nbPointsForRobot + 1);
-        
+
         for(List<Point> listPoint : partitionList){
             //besoin de recréer une liste car la partition donne une view et pas un nouvel objet
             List<Point> itRobotSteps = new ArrayList<>(listPoint);

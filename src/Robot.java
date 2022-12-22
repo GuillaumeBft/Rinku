@@ -1,4 +1,5 @@
 import io.jbotsim.core.Message;
+import io.jbotsim.core.Node;
 import io.jbotsim.core.Point;
 import io.jbotsim.ui.icons.Icons;
 
@@ -56,6 +57,9 @@ public class Robot extends WaypointNode {
             int nbRobots = Controller.topology.getNodes().stream().filter(n -> n instanceof Robot).collect(Collectors.toList()).size();
             if(cptRobotsAtSpawn % nbRobots == 0){
                 isWaiting = false;
+                //effectuer echanges de messages
+                giveMailToRobots();
+                //repartir pour un tour
                 startVisitRound();
             }
         } else {
@@ -72,14 +76,9 @@ public class Robot extends WaypointNode {
             if (Controller.selectedAlgo.equals(Controller.VRP)) {
                 //Si VRP alors dernier point == spawn donc attente des autres
                 if(getLocation().equals(new Point(Robot.SPAWN_POINT_X, Robot.SPAWN_POINT_Y))) {
-                    int nbRobots = Controller.topology.getNodes().stream().filter(n -> n instanceof Robot).collect(Collectors.toList()).size();
                     cptRobotsAtSpawn++;
-                    if (cptRobotsAtSpawn % nbRobots != 0) {
-                        isWaiting = true;
-                        destinations.clear();
-                    } else {
-                        startVisitRound();
-                    }
+                    isWaiting = true;
+                    destinations.clear();
                 }
             } else { // L'algo sélectionné n'est pas VRP
                 startVisitRound();
@@ -102,6 +101,35 @@ public class Robot extends WaypointNode {
     public void collectPostbox(Village village){
         backpack.addAll(village.getPostbox());
         village.clearPostBox();
+    }
+
+    public void giveMailToRobots(){
+        /**
+         * Pour chaque autre robot
+         *      on recupere la liste des villages qu'il va voir
+         *      pour tout nos messages dans le backpack
+         *          on ajoute au robot les messages qui ont comme destination un village de la liste
+         *          on retire le message de notre cote
+         */
+
+        for(Robot r: Controller.robots){
+            //ne pas regarder nous meme
+            if(!r.equals(this)){
+                List<Village> villagesInIt = new ArrayList<>();
+                for(Point p : r.getItinerary().getSteps()){
+                   villagesInIt.add(Controller.villages.get(p));
+                }
+
+                List<Mail> mailsToMove = new ArrayList<>();
+                for(Mail m : backpack){
+                    if(villagesInIt.contains(m.receiver)){
+                        mailsToMove.add(m);
+                    }
+                }
+                r.backpack.addAll(mailsToMove);
+                this.backpack.removeAll(mailsToMove);
+            }
+        }
     }
 
     public Itinerary getItinerary() {

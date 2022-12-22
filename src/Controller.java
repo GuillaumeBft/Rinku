@@ -19,6 +19,7 @@ public class Controller implements CommandListener {
     public static Topology topology;
     public static String selectedAlgo;
     static Map<Point, Village> villages;
+    static List<Robot> robots;
     static List<Itinerary> itineraries;
 
     public Controller() {
@@ -32,6 +33,8 @@ public class Controller implements CommandListener {
         villages = new HashMap<>();
         //addVillagesTest();
         addVillages();
+
+        robots = new ArrayList<>();
 
         new JViewer(topology);
         topology.addCommandListener(this);
@@ -60,6 +63,12 @@ public class Controller implements CommandListener {
                 topology.addNode(100, 100, new Robot(new Itinerary(itineraries.get(2).getSteps(), 0)));
             } else {
                 addRobots();
+            }
+
+            for (Node n : topology.getNodes()) {
+                if (n instanceof Robot) {
+                    robots.add((Robot) n);
+                }
             }
 
         } else if (command.equals(DISPLAY_MAXTIME)) {
