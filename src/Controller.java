@@ -97,8 +97,8 @@ public class Controller implements CommandListener {
                 itineraries.add(0, algorithm.noAlgo());
                 break;
         }
-        //TODO l'adapter pour qu'il prenne tous les itineraires quand y'en a plusieurs pour le VRP
-        //System.out.println("Distance of the itinerary made by " + selectedAlgo + " is " + Algorithm.getRoundTotalDistance(itineraries.get(0).getSteps()));
+        System.out.println("Total distance of the itineraries made by " + selectedAlgo + " is "
+                + Algorithm.getItinerariesTotalDistance(itineraries));
     }
 
     public void addVillages(){
@@ -107,6 +107,12 @@ public class Controller implements CommandListener {
         topology.addNode(100, 200, new Village("Croissy"));
         topology.addNode(250, 50, new Village("Pessac"));
         topology.addNode(250, 250, new Village("Croatie"));
+        /*topology.addNode(25, 25, new Village("Gap"));
+        topology.addNode(43, 324, new Village("Manhattan"));
+        topology.addNode(320, 260, new Village("Bucarest"));
+        topology.addNode(56, 125, new Village("Budapest"));
+        topology.addNode(240, 66, new Village("Singapour"));
+        topology.addNode(300, 130, new Village("Berlin"));*/
     }
 
     public void addVillagesTest(){
@@ -118,7 +124,7 @@ public class Controller implements CommandListener {
     public void addRobots(){
         Itinerary itinerary = itineraries.get(0);
         topology.addNode(100, 100, new Robot(itinerary));
-        topology.addNode(100, 100, new Robot(new Itinerary(itinerary.getSteps(), itinerary.getStart() + itinerary.getSize()/2)));
+        //topology.addNode(100, 100, new Robot(new Itinerary(itinerary.getSteps(), itinerary.getStart() + itinerary.getSize()/2)));
         //topology.addNode(100, 100, new Robot(new Itinerary(itinerary.getSteps(), itinerary.getEnd())));
     }
 }
