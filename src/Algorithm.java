@@ -1,3 +1,4 @@
+import com.google.common.collect.Lists;
 import io.jbotsim.core.Point;
 import io.jbotsim.core.Node;
 
@@ -174,19 +175,21 @@ public class Algorithm {
 
     public List<Itinerary> VRP(int nbRobots) {
         List<Itinerary> itineraries = new ArrayList<>();
-        int nbPointsForRobot = points.size() / nbRobots; //+1 pour un robot s'il y a un reste
+        int nbPointsForRobot = points.size() / nbRobots;
         Point spawnRobot = new Point(Robot.SPAWN_POINT_X, Robot.SPAWN_POINT_Y);
 
         //V1 juste repartition des points dans l'ordre
         Itinerary itGeneral = new Itinerary(points, 0);
-        for(int i = 0; i < nbRobots; i++){
-            List<Point> itRobotSteps = new ArrayList<>(itGeneral.getSteps()
-                    .subList(i * nbPointsForRobot, i * nbPointsForRobot + nbPointsForRobot));
+
+        List<List<Point>> partitionList = Lists.partition(itGeneral.getSteps(), nbPointsForRobot + 1);
+        
+        for(List<Point> listPoint : partitionList){
+            //besoin de recréer une liste car la partition donne une view et pas un nouvel objet
+            List<Point> itRobotSteps = new ArrayList<>(listPoint);
             Itinerary itRobot = new Itinerary(itRobotSteps, 0);
             itRobot.addStep(spawnRobot);
             itineraries.add(itRobot);
         }
-
 
         return itineraries;
     }

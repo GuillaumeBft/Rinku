@@ -52,11 +52,12 @@ public class Controller implements CommandListener {
             computeItinerary(topology.getNodes(), selectedAlgo);
 
             if(selectedAlgo.equals(VRP)){
-                int nbRobots = 2;
+                int nbRobots = 3;
                 int nbPointsForRobot = topology.getNodes().size() / nbRobots;
                 //pas du tout dynamique la frr
                 topology.addNode(100, 100, new Robot(new Itinerary(itineraries.get(0).getSteps(), 0)));
                 topology.addNode(100, 100, new Robot(new Itinerary(itineraries.get(1).getSteps(), 0)));
+                topology.addNode(100, 100, new Robot(new Itinerary(itineraries.get(2).getSteps(), 0)));
             } else {
                 addRobots();
             }
@@ -91,7 +92,7 @@ public class Controller implements CommandListener {
                 itineraries.add(0, algorithm.bruteForce());
                 break;
             case VRP:
-                itineraries = algorithm.VRP(2);
+                itineraries = algorithm.VRP(3);
                 break;
             default:
                 itineraries.add(0, algorithm.noAlgo());

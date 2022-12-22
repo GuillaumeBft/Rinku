@@ -5,6 +5,7 @@ import io.jbotsim.ui.icons.Icons;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Robot extends WaypointNode {
@@ -53,14 +54,10 @@ public class Robot extends WaypointNode {
     public void onClock() {
         if(isWaiting){
             int nbRobots = Controller.topology.getNodes().stream().filter(n -> n instanceof Robot).collect(Collectors.toList()).size();
-            System.out.println("cptrobot : " + cptRobotsAtSpawn);
-            if(cptRobotsAtSpawn % nbRobots != 0){
-                //System.out.println("Robot n°" + getID() + " => on est " + cptRobotsAtSpawn + " a attendre");
-            } else {
+            if(cptRobotsAtSpawn % nbRobots == 0){
                 isWaiting = false;
                 startVisitRound();
             }
-
         } else {
             super.onClock();
         }
@@ -72,7 +69,7 @@ public class Robot extends WaypointNode {
         if(getLocation().equals(itinerary.getSteps().get(itinerary.getEnd()))){
             System.out.println("Robot n°" + getID() + " : I've made a complete round in " + (getTime() - time));
 
-            if (Controller.selectedAlgo == Controller.VRP) {
+            if (Controller.selectedAlgo.equals(Controller.VRP)) {
                 //Si VRP alors dernier point == spawn donc attente des autres
                 if(getLocation().equals(new Point(Robot.SPAWN_POINT_X, Robot.SPAWN_POINT_Y))) {
                     int nbRobots = Controller.topology.getNodes().stream().filter(n -> n instanceof Robot).collect(Collectors.toList()).size();
