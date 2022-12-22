@@ -137,6 +137,14 @@ public class Algorithm {
         return distance;
     }
 
+    static public double getItinerariesTotalDistance(List<Itinerary> itineraries) {
+        double distance = 0;
+        for (Itinerary i : itineraries) {
+            distance += getRoundTotalDistance(i.getSteps());
+        }
+        return distance;
+    }
+
     static public double getDistanceThroughPath(List<Point> steps, Village start, Village end) {
         double distance = 0;
         int size = steps.size();
