@@ -72,7 +72,7 @@ public class Robot extends WaypointNode {
         if(getLocation().equals(itinerary.getSteps().get(itinerary.getEnd()))){
             System.out.println("Robot n°" + getID() + " : I've made a complete round in " + (getTime() - time));
 
-            if (Controller.selectedAlgo == "VRP") {
+            if (Controller.selectedAlgo == Controller.VRP) {
                 //Si VRP alors dernier point == spawn donc attente des autres
                 if(getLocation().equals(new Point(Robot.SPAWN_POINT_X, Robot.SPAWN_POINT_Y))) {
                     int nbRobots = Controller.topology.getNodes().stream().filter(n -> n instanceof Robot).collect(Collectors.toList()).size();
