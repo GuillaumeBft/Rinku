@@ -153,7 +153,9 @@ public class Algorithm {
     }
 
     static public double getDistanceBetweenTwoFurthestRobots(List<Point> steps, List<Robot> robots) {
-        if (robots.size() == 1) { return getRoundTotalDistance(steps); }
+        if (robots.size() == 1) {
+            return getRoundTotalDistance(steps);
+        }
         int size = robots.size();
         double max = 0;
         double currDistance;
@@ -167,5 +169,25 @@ public class Algorithm {
             }
         }
         return max;
+    }
+
+
+    public List<Itinerary> VRP(int nbRobots) {
+        List<Itinerary> itineraries = new ArrayList<>();
+        int nbPointsForRobot = points.size() / nbRobots; //+1 pour un robot s'il y a un reste
+        Point spawnRobot = new Point(Robot.SPAWN_POINT_X, Robot.SPAWN_POINT_Y);
+
+        //V1 juste repartition des points dans l'ordre
+        Itinerary itGeneral = new Itinerary(points, 0);
+        for(int i = 0; i < nbRobots; i++){
+            List<Point> itRobotSteps = new ArrayList<>(itGeneral.getSteps()
+                    .subList(i * nbPointsForRobot, i * nbPointsForRobot + nbPointsForRobot));
+            Itinerary itRobot = new Itinerary(itRobotSteps, 0);
+            itRobot.addStep(spawnRobot);
+            itineraries.add(itRobot);
+        }
+
+
+        return itineraries;
     }
 }

@@ -57,7 +57,8 @@ public class Village extends Node {
 
     public int getMaxCommunicationTime(Village village) {
         if (village.equals(this)) { return 0; }
-        Itinerary itinerary = Controller.itinerary;
+
+        Itinerary itinerary = Controller.itineraries.get(0);
         List<Robot> robots = new ArrayList<>();
         for (Node n : Controller.topology.getNodes()){
             if (n instanceof Robot) {
