@@ -137,12 +137,12 @@ public class Controller implements CommandListener {
     public void addRobots(){
         if (selectedAlgo.equals(VRP)) {
             for(int i = 0; i < NB_ROBOTS; i++){
-                topology.addNode(100, 100, new Robot(new Itinerary(itineraries.get(i).getSteps(), 0)));
+                topology.addNode(Robot.SPAWN_POINT_X, Robot.SPAWN_POINT_Y, new Robot(new Itinerary(itineraries.get(i).getSteps(), 0)));
             }
         } else {
             for(int i = 0; i < NB_ROBOTS; i++){
                 Itinerary itRobot = new Itinerary(itineraries.get(0).getSteps(), itineraries.get(0).getStart() + i);
-                topology.addNode(100, 100, new Robot(itRobot));
+                topology.addNode(Robot.SPAWN_POINT_X, Robot.SPAWN_POINT_Y, new Robot(itRobot));
             }
         }
     }
