@@ -38,6 +38,8 @@ public class Controller implements CommandListener {
 
         new JViewer(topology);
         topology.addCommandListener(this);
+        topology.removeCommand("Set communication range");
+        topology.removeCommand("Set sensing range");
         topology.addCommand(DISPLAY_MAXTIME);
         topology.addCommand(RANDOM_INSERT);
         topology.addCommand(VRP);
