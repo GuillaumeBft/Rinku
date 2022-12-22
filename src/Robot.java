@@ -14,7 +14,6 @@ public class Robot extends WaypointNode {
     public final static int SPAWN_POINT_X = 100;
     public final static int SPAWN_POINT_Y = 100;
     static int cptRobotsAtSpawn = 0;
-    Point spawn;
     Map<Point, Village> villages;
     Itinerary itinerary;
     List<Mail> backpack;
@@ -35,10 +34,9 @@ public class Robot extends WaypointNode {
 
     @Override
     public void onStart() {
-        spawn = getLocation();
         super.setSpeed(SPEED);
         startVisitRound();
-        System.out.println("my itinerary is : " + itinerary.toString());
+        System.out.println("Robot n°" + getID() + " my itinerary is : " + itinerary.toString());
     }
 
     public void startVisitRound(){
@@ -134,6 +132,10 @@ public class Robot extends WaypointNode {
 
     public Itinerary getItinerary() {
         return itinerary;
+    }
+
+    public void setItinerary(Itinerary itinerary) {
+        this.itinerary = itinerary;
     }
 
     @Override
