@@ -4,8 +4,8 @@ import io.jbotsim.core.Point;
 import java.util.List;
 
 public class Itinerary {
-    private List<Point> steps;
-    private int start;
+    List<Point> steps;
+    int start;
 
     public Itinerary(List<Point> steps, int start) {
         this.steps = steps;
@@ -34,6 +34,13 @@ public class Itinerary {
 
     @Override
     public String toString() {
-        return getSteps().toString();
+        StringBuilder strBuild = new StringBuilder();
+        strBuild.append('[');
+        for (Point p : steps) {
+            strBuild.append("(x= " + p.getX() + ", y= " + p.getY() + "), ");
+        }
+        strBuild.delete(strBuild.length()-2, strBuild.length());
+        strBuild.append(" | START at = " + start + " ]");
+        return strBuild.toString();
     }
 }
