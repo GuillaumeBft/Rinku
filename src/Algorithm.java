@@ -1,4 +1,3 @@
-import com.google.common.collect.Lists;
 import io.jbotsim.core.Point;
 import io.jbotsim.core.Node;
 
@@ -184,21 +183,30 @@ public class Algorithm {
     public List<Itinerary> VRP(int nbRobots) {
         List<Itinerary> itineraries = new ArrayList<>();
         int nbPointsForRobot = points.size() / nbRobots;
+        int resMod = points.size() % nbRobots;
+
         Point spawnRobot = new Point(Robot.SPAWN_POINT_X, Robot.SPAWN_POINT_Y);
 
-        //V1 juste repartition des points dans l'ordre
+        //Juste repartition des points dans l'ordre
         Itinerary itGeneral = new Itinerary(points, 0);
-        //V2 utilisation d'un vrai algo
+        //Utilisation d'un vrai algo
         //Itinerary itGeneral = randomInsertion();
 
-        List<List<Point>> partitionList = Lists.partition(itGeneral.getSteps(), nbPointsForRobot + 1);
+        List<Point> stepsItGeneral = itGeneral.getSteps();
+        List<Point> itRobotSteps;
 
-        for(List<Point> listPoint : partitionList){
-            //besoin de recréer une liste car la partition donne une view et pas un nouvel objet
-            List<Point> itRobotSteps = new ArrayList<>(listPoint);
+        for(int i = 0; i < nbRobots; i++){
+            if(resMod != 0){
+                itRobotSteps = new ArrayList<>(stepsItGeneral.subList(0, nbPointsForRobot + 1));
+                resMod--;
+            } else {
+                itRobotSteps = new ArrayList<>(stepsItGeneral.subList(0, nbPointsForRobot));
+            }
             Itinerary itRobot = new Itinerary(itRobotSteps, 0);
             itRobot.addStep(spawnRobot);
             itineraries.add(itRobot);
+
+            stepsItGeneral.removeAll(itRobotSteps);
         }
 
         return itineraries;

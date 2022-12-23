@@ -16,7 +16,7 @@ public class Controller implements CommandListener {
     public static final String RANDOM_INSERT = "Set Random Insertion algo";
     public static final String VRP = "Set VRP algo";
     public static final String DISPLAY_MAXTIME = "Display max comm. times";
-    public static final int NB_ROBOTS = 3;
+    public static final int NB_ROBOTS = 6;
     public static Topology topology;
     public static String selectedAlgo;
 
@@ -104,7 +104,7 @@ public class Controller implements CommandListener {
                 itineraries.add(0, algorithm.bruteForce());
                 break;
             case VRP:
-                itineraries = algorithm.VRP(3);
+                itineraries = algorithm.VRP(NB_ROBOTS);
                 break;
             default:
                 itineraries.add(0, algorithm.noAlgo());
