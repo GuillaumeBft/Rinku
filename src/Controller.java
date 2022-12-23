@@ -11,15 +11,17 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Controller implements CommandListener {
-    public static final String START = "Start execution";
-    public static final String BRUTEFORCE = "Set Bruteforce algo";
-    public static final String RANDOM_INSERT = "Set Random Insertion algo";
-    public static final String VRP = "Set VRP algo";
-    public static final String DISPLAY_MAXTIME = "Display max comm. times";
-    public static final int NB_ROBOTS = 6;
-    public static Topology topology;
-    public static String selectedAlgo;
+    static final String START = "Start execution";
+    static final String BRUTEFORCE = "Set Bruteforce algo";
+    static final String RANDOM_INSERT = "Set Random Insertion algo";
+    static final String VRP = "Set VRP algo";
+    static final String DISPLAY_MAXTIME = "Display max comm. times";
+    static final String ADD_ONE_ROBOT = "Add one robot";
+    static final String REMOVE_ONE_ROBOT = "Remove one robot";
 
+    static int nbRobots = 3;
+    static Topology topology;
+    static String selectedAlgo;
     static Map<Point, Village> villages;
     static List<Robot> robots;
     static List<Itinerary> itineraries;
@@ -48,6 +50,8 @@ public class Controller implements CommandListener {
         topology.addCommandListener(this);
         topology.removeCommand("Set communication range");
         topology.removeCommand("Set sensing range");
+        topology.addCommand(ADD_ONE_ROBOT);
+        topology.addCommand(REMOVE_ONE_ROBOT);
         topology.addCommand(DISPLAY_MAXTIME);
         topology.addCommand(RANDOM_INSERT);
         topology.addCommand(VRP);
@@ -65,6 +69,17 @@ public class Controller implements CommandListener {
                 }
                 computeItinerary(topology.getNodes(), selectedAlgo);
                 addRobots();
+                break;
+
+            case ADD_ONE_ROBOT:
+                nbRobots++;
+                System.out.println("Added a new robot, now there are " + nbRobots + " robots.");
+                break;
+
+            case REMOVE_ONE_ROBOT:
+                nbRobots--;
+                if (nbRobots < 1) { nbRobots = 1; }
+                System.out.println("Removed a robot, now there are " + nbRobots + " robots.");
                 break;
 
             case DISPLAY_MAXTIME :
@@ -104,7 +119,7 @@ public class Controller implements CommandListener {
                 itineraries.add(0, algorithm.bruteForce());
                 break;
             case VRP:
-                itineraries = algorithm.VRP(NB_ROBOTS);
+                itineraries = algorithm.VRP(nbRobots);
                 break;
             default:
                 itineraries.add(0, algorithm.noAlgo());
@@ -134,16 +149,18 @@ public class Controller implements CommandListener {
         topology.addNode(20, 300, new Village("Grenoble"));
     }
 
-    public void addRobots(){
-        if (selectedAlgo.equals(VRP)) {
-            for(int i = 0; i < NB_ROBOTS; i++){
-                topology.addNode(Robot.SPAWN_POINT_X, Robot.SPAWN_POINT_Y, new Robot(new Itinerary(itineraries.get(i).getSteps(), 0)));
+    public void addRobots() {
+        Robot robotAdded;
+        for(int i = 0; i < nbRobots; i++){
+            if (selectedAlgo.equals(VRP)) {
+                robotAdded =  new Robot(new Itinerary(itineraries.get(i).getSteps(), 0));
+                topology.addNode(Robot.SPAWN_POINT_X, Robot.SPAWN_POINT_Y, robotAdded);
+            } else {
+                Itinerary it = new Itinerary(itineraries.get(0).getSteps(), i % (itineraries.get(0).getSteps().size()));
+                robotAdded = new Robot(it);
+                topology.addNode(Robot.SPAWN_POINT_X, Robot.SPAWN_POINT_Y, robotAdded);
             }
-        } else {
-            for(int i = 0; i < NB_ROBOTS; i++){
-                Itinerary itRobot = new Itinerary(itineraries.get(0).getSteps(), itineraries.get(0).getStart() + i);
-                topology.addNode(Robot.SPAWN_POINT_X, Robot.SPAWN_POINT_Y, new Robot(itRobot));
-            }
+            robots.add(robotAdded);
         }
     }
 }
