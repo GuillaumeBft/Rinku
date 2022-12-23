@@ -47,13 +47,13 @@ public class Village extends Node {
         Random rand = new Random();
         Village randomElement = potentialDestinations.get(rand.nextInt(potentialDestinations.size()));
         postbox.add(new Mail(this, randomElement, "Hello, my name is Brandom, I'm from " + name
-                + " and I want to wizz my crush Randomia who lives in " + (randomElement).getName()));
+                + " and I want to wizz my crush Randomia who lives in " + (randomElement).getName(), getTime()));
         System.out.println("Je suis " + name + " j'envoie a : " + (randomElement).getName());
     }
 
     @Override
     public void onMessage(Message message) {
-        System.out.println("Being " + name + " i got new message from " + ((Village)((Mail)message.getContent()).sender).name + " : " + ((Mail)message.getContent()).content);
+        System.out.println("I'm " + name + " I got new message from " + ((Village)((Mail)message.getContent()).sender).name + " : " + ((Mail)message.getContent()).content);
     }
 
     public int getMaxCommunicationTime(Village village) {
