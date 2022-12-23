@@ -51,7 +51,13 @@ public class Algorithm {
     }
 
     public Itinerary randomInsertion() {
-        // Il faut au moins 5 points pour utiliser cet algo
+        // This algorithm needs at least 5 villages to works
+        if (points.size() < 5) {
+            System.out.println("[WARNING] Random Insertion needs at least 5 villages to works");
+            System.out.println("    => Random Insertion is replaced by Bruteforce for this execution");
+            return bruteForce();
+        }
+
         List<Point> steps = new ArrayList<>();
         steps.add(points.get(0));
         points.remove(0);

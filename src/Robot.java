@@ -69,7 +69,7 @@ public class Robot extends WaypointNode {
     public void onArrival() {
         //The robot has reached its last destination
         if(getLocation().equals(itinerary.getSteps().get(itinerary.getEnd()))){
-            System.out.println("Robot n°" + getID() + " : I've made a complete round in " + (getTime() - time));
+            //System.out.println("Robot n°" + getID() + " : I've made a complete round in " + (getTime() - time) + " ticks");
 
             if (Controller.selectedAlgo.equals(Controller.VRP)) {
                 //Si VRP alors dernier point == spawn donc attente des autres
