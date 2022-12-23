@@ -60,13 +60,8 @@ public class Village extends Node {
         if (village.equals(this)) { return 0; }
 
         Itinerary itinerary = Controller.itineraries.get(0);
-        List<Robot> robots = new ArrayList<>();
-        for (Node n : Controller.topology.getNodes()){
-            if (n instanceof Robot) {
-                robots.add((Robot) n);
-            }
-        }
-        double maxTime = Algorithm.getDistanceBetweenTwoFurthestRobots(itinerary.getSteps(), robots)
+
+        double maxTime = Algorithm.getDistanceBetweenTwoFurthestRobots(itinerary.getSteps(), Controller.robots)
                 + Algorithm.getRoundTotalDistance(itinerary.getSteps())
                 - Algorithm.getDistanceThroughPath(itinerary.getSteps(), village, this);
         return (int) maxTime / Robot.SPEED;
