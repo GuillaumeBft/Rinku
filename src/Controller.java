@@ -151,12 +151,16 @@ public class Controller implements CommandListener {
 
     public void addRobots() {
         Robot robotAdded;
+        int shift = itineraries.get(0).getSteps().size() / nbRobots;
+
         for(int i = 0; i < nbRobots; i++){
             if (selectedAlgo.equals(VRP)) {
                 robotAdded =  new Robot(new Itinerary(itineraries.get(i).getSteps(), 0));
                 topology.addNode(Robot.SPAWN_POINT_X, Robot.SPAWN_POINT_Y, robotAdded);
             } else {
-                Itinerary it = new Itinerary(itineraries.get(0).getSteps(), i % (itineraries.get(0).getSteps().size()));
+                // Shift the starting village according to the number of villages and robots
+                Itinerary it = new Itinerary(itineraries.get(0).getSteps(),
+                        (i * shift) % (itineraries.get(0).getSteps().size()));
                 robotAdded = new Robot(it);
                 topology.addNode(Robot.SPAWN_POINT_X, Robot.SPAWN_POINT_Y, robotAdded);
             }
