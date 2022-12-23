@@ -6,8 +6,8 @@ import java.util.*;
 
 public class Algorithm {
 
-    protected List<Point> points;
-    protected List<Node> nodes;
+    List<Point> points;
+    List<Node> nodes;
     Map<Integer, Point> locations;
 
     public Algorithm(List<Node> nodes) {

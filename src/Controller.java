@@ -11,17 +11,17 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Controller implements CommandListener {
-    public static final String START = "Start execution";
-    public static final String BRUTEFORCE = "Set Bruteforce algo";
-    public static final String RANDOM_INSERT = "Set Random Insertion algo";
-    public static final String VRP = "Set VRP algo";
-    public static final String DISPLAY_MAXTIME = "Display max comm. times";
-    public static final String ADD_ONE_ROBOT = "Add one robot";
-    public static final String REMOVE_ONE_ROBOT = "Remove one robot";
-    public static int nbRobots = 3;
-    public static Topology topology;
-    public static String selectedAlgo;
+    static final String START = "Start execution";
+    static final String BRUTEFORCE = "Set Bruteforce algo";
+    static final String RANDOM_INSERT = "Set Random Insertion algo";
+    static final String VRP = "Set VRP algo";
+    static final String DISPLAY_MAXTIME = "Display max comm. times";
+    static final String ADD_ONE_ROBOT = "Add one robot";
+    static final String REMOVE_ONE_ROBOT = "Remove one robot";
 
+    static int nbRobots = 3;
+    static Topology topology;
+    static String selectedAlgo;
     static Map<Point, Village> villages;
     static List<Robot> robots;
     static List<Itinerary> itineraries;
