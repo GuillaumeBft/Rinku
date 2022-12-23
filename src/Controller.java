@@ -149,7 +149,7 @@ public class Controller implements CommandListener {
         topology.addNode(20, 300, new Village("Grenoble"));
     }
 
-    public void addRobots(){
+    public void addRobots() {
         if (selectedAlgo.equals(VRP)) {
             for(int i = 0; i < nbRobots; i++){
                 topology.addNode(100, 100, new Robot(new Itinerary(itineraries.get(i).getSteps(), 0)));
@@ -158,6 +158,13 @@ public class Controller implements CommandListener {
             for(int i = 0; i < nbRobots; i++){
                 Itinerary it = new Itinerary(itineraries.get(0).getSteps(), i % (itineraries.get(0).getSteps().size()));
                 topology.addNode(100, 100, new Robot(it));
+            }
+        }
+
+        //fill global robots list
+        for (Node n : topology.getNodes()){
+            if (n instanceof Robot) {
+                robots.add((Robot) n);
             }
         }
     }
