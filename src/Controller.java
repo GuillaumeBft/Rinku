@@ -14,6 +14,7 @@ public class Controller implements CommandListener {
     static final String START = "Start execution";
     static final String BRUTEFORCE = "Set Bruteforce algo";
     static final String RANDOM_INSERT = "Set Random Insertion algo";
+    static final String NEAREST_NEIGHBOR = "Set Nearest Neighbor algo";
     static final String VRP = "Set VRP algo";
     static final String DISPLAY_MAXTIME = "Display max comm. times";
     static final String ADD_ONE_ROBOT = "Add one robot";
@@ -54,6 +55,7 @@ public class Controller implements CommandListener {
         topology.addCommand(REMOVE_ONE_ROBOT);
         topology.addCommand(DISPLAY_MAXTIME);
         topology.addCommand(RANDOM_INSERT);
+        topology.addCommand(NEAREST_NEIGHBOR);
         topology.addCommand(VRP);
         topology.addCommand(BRUTEFORCE);
     }
@@ -102,6 +104,11 @@ public class Controller implements CommandListener {
                 System.out.println("Random insertion algorithm has been selected for the compute of the robot path.");
                 break;
 
+            case NEAREST_NEIGHBOR :
+                selectedAlgo = NEAREST_NEIGHBOR;
+                System.out.println("Nearest neighbor algorithm has been selected for the compute of the robot path.");
+                break;
+
             case VRP :
                 selectedAlgo = VRP;
                 System.out.println("VRP algorithm has been selected for the compute of the robot path.");
@@ -118,6 +125,11 @@ public class Controller implements CommandListener {
             case BRUTEFORCE:
                 itineraries.add(0, algorithm.bruteForce());
                 break;
+
+            case NEAREST_NEIGHBOR:
+                itineraries.add(0, algorithm.nearestNeighbor());
+                break;
+
             case VRP:
                 itineraries = algorithm.VRP(nbRobots);
                 break;
