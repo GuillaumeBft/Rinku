@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 
 public class Robot extends WaypointNode {
     final static int SPEED = 10;
-    public final static int SPAWN_POINT_X = 100;
-    public final static int SPAWN_POINT_Y = 100;
+    final static int SPAWN_POINT_X = 100;
+    final static int SPAWN_POINT_Y = 100;
     static int cptRobotsAtSpawn = 0;
     Map<Point, Village> villages;
     Itinerary itinerary;
@@ -55,9 +55,9 @@ public class Robot extends WaypointNode {
             int nbRobots = Controller.topology.getNodes().stream().filter(n -> n instanceof Robot).collect(Collectors.toList()).size();
             if(cptRobotsAtSpawn % nbRobots == 0){
                 isWaiting = false;
-                //effectuer echanges de messages
+                //exchange mails with others robots
                 giveMailToRobots();
-                //repartir pour un tour
+                //let's start a new round
                 startVisitRound();
             }
         } else {
@@ -67,7 +67,7 @@ public class Robot extends WaypointNode {
 
     @Override
     public void onArrival() {
-        // Le robot est arrivé à sa dernière destination
+        //The robot has reached its last destination
         if(getLocation().equals(itinerary.getSteps().get(itinerary.getEnd()))){
             System.out.println("Robot n°" + getID() + " : I've made a complete round in " + (getTime() - time));
 
@@ -78,15 +78,15 @@ public class Robot extends WaypointNode {
                     isWaiting = true;
                     destinations.clear();
                 }
-            } else { // L'algo sélectionné n'est pas VRP
+            } else { // Selected algo is not VRP
                 startVisitRound();
             }
-        } else { // Le robot n'est pas arrivé à sa dernière destination
+        } else { //The robot hasn't reached its last destination
             Village current = villages.get(getLocation());
 
-            //recuperer les courriers
+            //Get the mails from the village
             collectPostbox(current);
-            //délivrer les courriers
+            //Deliver the mails to the village
             for (Mail m : backpack) {
                 if (m.receiver.equals(current)) {
                     send(current, new Message(m));
@@ -103,15 +103,15 @@ public class Robot extends WaypointNode {
 
     public void giveMailToRobots(){
         /**
-         * Pour chaque autre robot
-         *      on recupere la liste des villages qu'il va voir
-         *      pour tout nos messages dans le backpack
-         *          on ajoute au robot les messages qui ont comme destination un village de la liste
-         *          on retire le message de notre cote
+         * For all others robots
+         *      get the list of the villages on its path
+         *      for all the messages in my backpack
+         *          give the message if the destination is a village on the path of the robot
+         *          remove the message in my backpack
          */
 
         for(Robot r: Controller.robots){
-            //ne pas regarder nous meme
+            //don't check myself
             if(!r.equals(this)){
                 List<Village> villagesInIt = new ArrayList<>();
                 for(Point p : r.getItinerary().getSteps()){
