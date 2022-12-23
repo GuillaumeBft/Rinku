@@ -16,7 +16,9 @@ public class Controller implements CommandListener {
     public static final String RANDOM_INSERT = "Set Random Insertion algo";
     public static final String VRP = "Set VRP algo";
     public static final String DISPLAY_MAXTIME = "Display max comm. times";
-    public static final int NB_ROBOTS = 3;
+    public static final String ADD_ONE_ROBOT = "Add one robot";
+    public static final String REMOVE_ONE_ROBOT = "Remove one robot";
+    public static int nbRobots = 3;
     public static Topology topology;
     public static String selectedAlgo;
 
@@ -48,6 +50,8 @@ public class Controller implements CommandListener {
         topology.addCommandListener(this);
         topology.removeCommand("Set communication range");
         topology.removeCommand("Set sensing range");
+        topology.addCommand(ADD_ONE_ROBOT);
+        topology.addCommand(REMOVE_ONE_ROBOT);
         topology.addCommand(DISPLAY_MAXTIME);
         topology.addCommand(RANDOM_INSERT);
         topology.addCommand(VRP);
@@ -65,6 +69,17 @@ public class Controller implements CommandListener {
                 }
                 computeItinerary(topology.getNodes(), selectedAlgo);
                 addRobots();
+                break;
+
+            case ADD_ONE_ROBOT:
+                nbRobots++;
+                System.out.println("Added a new robot, now there are " + nbRobots + " robots.");
+                break;
+
+            case REMOVE_ONE_ROBOT:
+                nbRobots--;
+                if (nbRobots < 1) { nbRobots = 1; }
+                System.out.println("Removed a robot, now there are " + nbRobots + " robots.");
                 break;
 
             case DISPLAY_MAXTIME :
@@ -136,11 +151,11 @@ public class Controller implements CommandListener {
 
     public void addRobots(){
         if (selectedAlgo.equals(VRP)) {
-            for(int i = 0; i < NB_ROBOTS; i++){
+            for(int i = 0; i < nbRobots; i++){
                 topology.addNode(100, 100, new Robot(new Itinerary(itineraries.get(i).getSteps(), 0)));
             }
         } else {
-            for(int i = 0; i < NB_ROBOTS; i++){
+            for(int i = 0; i < nbRobots; i++){
                 Itinerary it = new Itinerary(itineraries.get(0).getSteps(), i % (itineraries.get(0).getSteps().size()));
                 topology.addNode(100, 100, new Robot(it));
             }
