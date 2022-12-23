@@ -141,8 +141,8 @@ public class Controller implements CommandListener {
             }
         } else {
             for(int i = 0; i < NB_ROBOTS; i++){
-                Itinerary itRobot = new Itinerary(itineraries.get(0).getSteps(), itineraries.get(0).getStart() + i);
-                topology.addNode(100, 100, new Robot(itRobot));
+                Itinerary it = new Itinerary(itineraries.get(0).getSteps(), i % (itineraries.get(0).getSteps().size()));
+                topology.addNode(100, 100, new Robot(it));
             }
         }
     }
