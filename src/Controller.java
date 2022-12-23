@@ -142,11 +142,11 @@ public class Controller implements CommandListener {
     }
 
     public void addVillages(){
-        topology.addNode(20, 200, new Village("Signy-Le-Petit"));
-        topology.addNode(20, 70, new Village("Cussac"));
-        topology.addNode(100, 200, new Village("Croissy"));
-        topology.addNode(250, 50, new Village("Pessac"));
-        topology.addNode(250, 250, new Village("Croatie"));
+        topology.addNode(120, 275, new Village("Signy-Le-Petit"));
+        topology.addNode(100, 70, new Village("Cussac"));
+        topology.addNode(150, 200, new Village("Croissy"));
+        topology.addNode(450, 50, new Village("Pessac"));
+        topology.addNode(400, 300, new Village("Croatie"));
         /*topology.addNode(25, 25, new Village("Gap"));
         topology.addNode(43, 324, new Village("Manhattan"));
         topology.addNode(320, 260, new Village("Bucarest"));

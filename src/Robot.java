@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 
 public class Robot extends WaypointNode {
     final static int SPEED = 10;
-    final static int SPAWN_POINT_X = 100;
-    final static int SPAWN_POINT_Y = 100;
+    final static int SPAWN_POINT_X = 300;
+    final static int SPAWN_POINT_Y = 200;
     static int cptRobotsAtSpawn = 0;
     Map<Point, Village> villages;
     Itinerary itinerary;
