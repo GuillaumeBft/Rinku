@@ -27,6 +27,7 @@ public class Controller implements CommandListener {
     static List<Robot> robots;
     static List<Itinerary> itineraries;
 
+    int averageMaxTime;
     List<Point> emptyPoints;
     Itinerary emptyIt;
 
@@ -60,17 +61,36 @@ public class Controller implements CommandListener {
         topology.addCommand(BRUTEFORCE);
     }
 
+    public Controller(int nbRobots, String selectedAlgo) {
+        topology = new Topology();
+        topology.setDefaultNodeModel(Village.class);
+        //topology.setTimeUnit(100);
+
+        this.selectedAlgo = selectedAlgo;
+        this.nbRobots = nbRobots;
+
+        itineraries = new ArrayList<>();
+
+        villages = new HashMap<>();
+        addVillages();
+
+        robots = new ArrayList<>();
+
+        emptyPoints = new ArrayList<>();
+        emptyIt = new Itinerary(emptyPoints, 0);
+
+        beforeStartExecution();
+        topology.start();
+        topology.pause();
+
+        averageMaxTime = averageCommunicationMaxTime();
+    }
+
     @Override
     public void onCommand(String command) {
         switch (command) {
             case START :
-                for (Node n : topology.getNodes()) {
-                    if (n instanceof Village) {
-                        villages.put(n.getLocation(), (Village) n);
-                    }
-                }
-                computeItinerary(topology.getNodes(), selectedAlgo);
-                addRobots();
+                beforeStartExecution();
                 break;
 
             case ADD_ONE_ROBOT:
@@ -85,6 +105,7 @@ public class Controller implements CommandListener {
                 break;
 
             case DISPLAY_MAXTIME :
+                System.out.println("--- Average max time = " + averageCommunicationMaxTime() + " ---");
                 for (Village v : villages.values()) {
                     System.out.println("Max times to deliver message from " + v.getName() + " to ");
                     for (Village v2 : villages.values().stream().filter(village -> !village.equals(v)).collect(Collectors.toList())) {
@@ -116,6 +137,28 @@ public class Controller implements CommandListener {
         }
     }
 
+    public void beforeStartExecution() {
+        for (Node n : topology.getNodes()) {
+            if (n instanceof Village) {
+                villages.put(n.getLocation(), (Village) n);
+            }
+        }
+        computeItinerary(topology.getNodes(), selectedAlgo);
+        addRobots();
+    }
+
+    public int averageCommunicationMaxTime() {
+        int cumulatedMaxTimes = 0;
+        int numberOfCumulated = 0;
+        for (Village v : villages.values()) {
+            for (Village v2 : villages.values().stream().filter(village -> !village.equals(v)).collect(Collectors.toList())) {
+                cumulatedMaxTimes += v.getMaxCommunicationTime(v2);
+                numberOfCumulated++;
+            }
+        }
+        return cumulatedMaxTimes / numberOfCumulated;
+    }
+
     public static void computeItinerary(List<Node> nodes, String selectedAlgo){
         Algorithm algorithm = new Algorithm(nodes);
         switch (selectedAlgo) {
@@ -137,8 +180,8 @@ public class Controller implements CommandListener {
                 itineraries.add(0, algorithm.noAlgo());
                 break;
         }
-        System.out.println("Total distance of the itineraries made by " + selectedAlgo + " is "
-                + Algorithm.getItinerariesTotalDistance(itineraries));
+        /*System.out.println("Total distance of the itineraries made by " + selectedAlgo + " is "
+                + Algorithm.getItinerariesTotalDistance(itineraries));*/
     }
 
     public void addVillages(){

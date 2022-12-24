@@ -36,7 +36,7 @@ public class Robot extends WaypointNode {
     public void onStart() {
         super.setSpeed(SPEED);
         startVisitRound();
-        System.out.println("Robot n°" + getID() + " my itinerary is : " + itinerary.toString());
+        //System.out.println("Robot n°" + getID() + " my itinerary is : " + itinerary.toString());
     }
 
     public void startVisitRound(){
