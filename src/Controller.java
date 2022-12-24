@@ -214,10 +214,11 @@ public class Controller implements CommandListener {
                 topology.addNode(Robot.SPAWN_POINT_X, Robot.SPAWN_POINT_Y, robotAdded);
             } else {
                 // Shift the starting village according to the number of villages and robots
-                Itinerary it = new Itinerary(itineraries.get(0).getSteps(),
-                        (i * shift) % (itineraries.get(0).getSteps().size()));
+                int indexStartVillage = (i * shift) % (itineraries.get(0).getSteps().size());
+                Itinerary it = new Itinerary(itineraries.get(0).getSteps(), indexStartVillage);
                 robotAdded = new Robot(it);
-                topology.addNode(Robot.SPAWN_POINT_X, Robot.SPAWN_POINT_Y, robotAdded);
+                Point startPoint = it.getSteps().get(indexStartVillage);
+                topology.addNode(startPoint.getX(), startPoint.getY(), robotAdded);
             }
             robots.add(robotAdded);
         }
