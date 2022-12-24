@@ -3,6 +3,7 @@ import io.jbotsim.core.Node;
 import io.jbotsim.core.Point;
 import io.jbotsim.ui.icons.Icons;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -90,6 +91,7 @@ public class Robot extends WaypointNode {
             for (Mail m : backpack) {
                 if (m.receiver.equals(current)) {
                     send(current, new Message(m));
+                    System.out.println("Message from " + m.sender.getName() + " to " + m.receiver.getName() + " sent in " + (getTime() - m.time));
                 }
             }
             backpack = backpack.stream().filter(mail -> !mail.receiver.equals(current)).collect(Collectors.toList());
@@ -102,14 +104,6 @@ public class Robot extends WaypointNode {
     }
 
     public void giveMailToRobots(){
-        /**
-         * For all others robots
-         *      get the list of the villages on its path
-         *      for all the messages in my backpack
-         *          give the message if the destination is a village on the path of the robot
-         *          remove the message in my backpack
-         */
-
         for(Robot r: Controller.robots){
             //don't check myself
             if(!r.equals(this)){
@@ -132,10 +126,6 @@ public class Robot extends WaypointNode {
 
     public Itinerary getItinerary() {
         return itinerary;
-    }
-
-    public void setItinerary(Itinerary itinerary) {
-        this.itinerary = itinerary;
     }
 
     @Override
