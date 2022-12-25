@@ -63,7 +63,7 @@ public class Village extends Node {
 
         double maxTime = Algorithm.getDistanceBetweenTwoFurthestRobots(itinerary.getSteps(), Controller.robots)
                 + Algorithm.getRoundTotalDistance(itinerary.getSteps())
-                - Algorithm.getDistanceThroughPath(itinerary.getSteps(), village.getLocation(), this.getLocation());
+                - Algorithm.getDistanceThroughPath(itinerary.getSteps(), village, this);
         return (int) maxTime / Robot.SPEED;
     }
 

@@ -1,6 +1,7 @@
 import io.jbotsim.core.Point;
 import io.jbotsim.core.Node;
 
+import javax.naming.ldap.Control;
 import java.util.*;
 
 public class Algorithm {
@@ -150,11 +151,11 @@ public class Algorithm {
         return distance;
     }
 
-    static public double getDistanceThroughPath(List<Point> steps, Point start, Point end) {
+    static public double getDistanceThroughPath(List<Point> steps, Village start, Village end) {
         double distance = 0;
         int size = steps.size();
-        int startIndex = steps.indexOf(start);
-        int endIndex = steps.indexOf(end);
+        int startIndex = steps.indexOf(start.getLocation());
+        int endIndex = steps.indexOf(end.getLocation());
         int i = startIndex;
         Point next = steps.get((i + 1) % size);
         do {
@@ -164,6 +165,28 @@ public class Algorithm {
         } while (i != endIndex);
 
         return distance;
+    }
+
+    static public double getDistanceThroughPath(List<Point> steps,
+                                                Point start, Village villAfterStart,
+                                                Point end, Village villAfterEnd) {
+        double distance = 0;
+        Village villPreviousStart, villPreviousEnd;
+        if (steps.indexOf(villAfterStart.getLocation()) == 0) {
+            villPreviousStart = Controller.villages.get(steps.get(steps.size() - 1));
+        } else {
+            villPreviousStart = Controller.villages.get(steps.get(steps.indexOf(villAfterStart) - 1));
+        }
+
+        if (steps.indexOf(villAfterEnd.getLocation()) == 0) {
+            villPreviousEnd = Controller.villages.get(steps.get(steps.size() - 1));
+        } else {
+            villPreviousEnd = Controller.villages.get(steps.get(steps.indexOf(villAfterEnd) - 1));
+        }
+
+        return (villPreviousStart.distance(villAfterStart) - villPreviousStart.distance(start))
+                + getDistanceThroughPath(steps, villAfterStart, villPreviousEnd)
+                + (villPreviousEnd.distance(villAfterEnd) - end.distance(villAfterEnd.getLocation()));
     }
 
     static public Itinerary itineraryAfterShiftingDistanceThroughPath(List<Point> steps, Point start, double distance) {
@@ -200,7 +223,9 @@ public class Algorithm {
         for (int i = 0; i < size; i++) {
             Robot currRobot = robots.get(i);
             Robot nextRobot = robots.get((i + 1) % size);
-            currDistance = getDistanceThroughPath(steps, currRobot.getLocation(), nextRobot.getLocation());
+            currDistance = getDistanceThroughPath(steps,
+                    currRobot.getItinerary().getSpawn(), Controller.villages.get(steps.get(currRobot.getItinerary().getStart())),
+                    nextRobot.getItinerary().getSpawn(), Controller.villages.get(steps.get(nextRobot.getItinerary().getStart())));
             if (currDistance > max) {
                 max = currDistance;
             }
