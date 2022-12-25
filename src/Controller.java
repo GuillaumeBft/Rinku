@@ -28,8 +28,6 @@ public class Controller implements CommandListener {
     static List<Itinerary> itineraries;
 
     int averageMaxTime;
-    List<Point> emptyPoints;
-    Itinerary emptyIt;
 
     public Controller() {
         topology = new Topology();
@@ -45,9 +43,6 @@ public class Controller implements CommandListener {
 
         robots = new ArrayList<>();
 
-        emptyPoints = new ArrayList<>();
-        emptyIt = new Itinerary(emptyPoints, 0);
-
         new JViewer(topology);
         topology.addCommandListener(this);
         topology.removeCommand("Set communication range");
@@ -57,8 +52,8 @@ public class Controller implements CommandListener {
         topology.addCommand(DISPLAY_MAXTIME);
         topology.addCommand(RANDOM_INSERT);
         topology.addCommand(NEAREST_NEIGHBOR);
-        topology.addCommand(VRP);
         topology.addCommand(BRUTEFORCE);
+        topology.addCommand(VRP);
     }
 
     public Controller(int nbRobots, String selectedAlgo) {
@@ -75,9 +70,6 @@ public class Controller implements CommandListener {
         addVillages();
 
         robots = new ArrayList<>();
-
-        emptyPoints = new ArrayList<>();
-        emptyIt = new Itinerary(emptyPoints, 0);
 
         beforeStartExecution();
         topology.start();
@@ -180,8 +172,8 @@ public class Controller implements CommandListener {
                 itineraries.add(0, algorithm.noAlgo());
                 break;
         }
-        /*System.out.println("Total distance of the itineraries made by " + selectedAlgo + " is "
-                + Algorithm.getItinerariesTotalDistance(itineraries));*/
+        System.out.println("Total distance of the itineraries made by " + selectedAlgo + " is "
+                + Algorithm.getItinerariesTotalDistance(itineraries));
     }
 
     public void addVillages(){
@@ -206,19 +198,18 @@ public class Controller implements CommandListener {
 
     public void addRobots() {
         Robot robotAdded;
-        int shift = itineraries.get(0).getSteps().size() / nbRobots;
+        List<Point> stepsOfFirstIt = itineraries.get(0).getSteps();
+        double shift = Algorithm.getRoundTotalDistance(itineraries.get(0).getSteps()) / nbRobots;
 
         for(int i = 0; i < nbRobots; i++){
             if (selectedAlgo.equals(VRP)) {
                 robotAdded =  new Robot(new Itinerary(itineraries.get(i).getSteps(), 0));
                 topology.addNode(Robot.SPAWN_POINT_X, Robot.SPAWN_POINT_Y, robotAdded);
             } else {
-                // Shift the starting village according to the number of villages and robots
-                int indexStartVillage = (i * shift) % (itineraries.get(0).getSteps().size());
-                Itinerary it = new Itinerary(itineraries.get(0).getSteps(), indexStartVillage);
+                Itinerary it = Algorithm.itineraryAfterShiftingDistanceThroughPath(stepsOfFirstIt,
+                        stepsOfFirstIt.get(0), (i * shift));
                 robotAdded = new Robot(it);
-                Point startPoint = it.getSteps().get(indexStartVillage);
-                topology.addNode(startPoint.getX(), startPoint.getY(), robotAdded);
+                topology.addNode(it.getSpawn().getX(), it.getSpawn().getY(), robotAdded);
             }
             robots.add(robotAdded);
         }

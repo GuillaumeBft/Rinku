@@ -48,7 +48,7 @@ public class Village extends Node {
         Village randomElement = potentialDestinations.get(rand.nextInt(potentialDestinations.size()));
         postbox.add(new Mail(this, randomElement, "Hello, my name is Brandom, I'm from " + name
                 + " and I want to wizz my crush Randomia who lives in " + (randomElement).getName(), getTime()));
-        System.out.println("Je suis " + name + " j'envoie a : " + (randomElement).getName());
+        //System.out.println("Je suis " + name + " j'envoie a : " + (randomElement).getName());
     }
 
     @Override
@@ -63,7 +63,7 @@ public class Village extends Node {
 
         double maxTime = Algorithm.getDistanceBetweenTwoFurthestRobots(itinerary.getSteps(), Controller.robots)
                 + Algorithm.getRoundTotalDistance(itinerary.getSteps())
-                - Algorithm.getDistanceThroughPath(itinerary.getSteps(), village, this);
+                - Algorithm.getDistanceThroughPath(itinerary.getSteps(), village.getLocation(), this.getLocation());
         return (int) maxTime / Robot.SPEED;
     }
 

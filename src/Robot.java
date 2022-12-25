@@ -42,7 +42,7 @@ public class Robot extends WaypointNode {
 
     public void startVisitRound(){
         int cpt = 0;
-        for (int i = itinerary.getStart();cpt < itinerary.getSize(); i++) {
+        for (int i = itinerary.getStart(); cpt < itinerary.getSize(); i++) {
             cpt++;
             i %= itinerary.getSize();
             addDestination(itinerary.getSteps().get(i));

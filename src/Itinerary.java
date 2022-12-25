@@ -6,10 +6,16 @@ import java.util.List;
 public class Itinerary {
     List<Point> steps;
     int start;
+    Point spawn;
 
     public Itinerary(List<Point> steps, int start) {
+        this(steps, start, steps.get(start));
+    }
+
+    public Itinerary(List<Point> steps, int start, Point spawn) {
         this.steps = steps;
         this.start = start;
+        this.spawn = spawn;
     }
 
     public List<Point> getSteps() {
@@ -18,6 +24,10 @@ public class Itinerary {
 
     public int getStart() {
         return start;
+    }
+
+    public Point getSpawn() {
+        return spawn;
     }
 
     public int getEnd() {

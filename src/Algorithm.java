@@ -150,11 +150,11 @@ public class Algorithm {
         return distance;
     }
 
-    static public double getDistanceThroughPath(List<Point> steps, Village start, Village end) {
+    static public double getDistanceThroughPath(List<Point> steps, Point start, Point end) {
         double distance = 0;
         int size = steps.size();
-        int startIndex = steps.indexOf(start.getLocation());
-        int endIndex = steps.indexOf(end.getLocation());
+        int startIndex = steps.indexOf(start);
+        int endIndex = steps.indexOf(end);
         int i = startIndex;
         Point next = steps.get((i + 1) % size);
         do {
@@ -166,6 +166,30 @@ public class Algorithm {
         return distance;
     }
 
+    static public Itinerary itineraryAfterShiftingDistanceThroughPath(List<Point> steps, Point start, double distance) {
+        boolean noNeedShift = distance == 0;
+        int size = steps.size();
+        Point curr = null;
+        Point next = null;
+        int startIndexVillage = -1;
+        for (int i = steps.indexOf(start); distance >= 0; i++) {
+            curr = steps.get(i);
+            next = steps.get((i + 1) % size);
+            distance -= curr.distance(next);
+            startIndexVillage = (i + 1) % size;
+        }
+
+        if (noNeedShift) { return new Itinerary(steps, startIndexVillage); }
+
+        double segmentDistance = curr.distance(next);
+        double distanceThroughSegment = segmentDistance + distance;
+        double ratio = distanceThroughSegment / segmentDistance;
+        Point spawn = new Point((1 - ratio) * curr.getX() + ratio * next.getX(),
+                (1 - ratio) * curr.getY() + ratio * next.getY());
+
+        return new Itinerary(steps, startIndexVillage, spawn);
+    }
+
     static public double getDistanceBetweenTwoFurthestRobots(List<Point> steps, List<Robot> robots) {
         if (robots.size() == 1) {
             return getRoundTotalDistance(steps);
@@ -174,10 +198,9 @@ public class Algorithm {
         double max = 0;
         double currDistance;
         for (int i = 0; i < size; i++) {
+            Robot currRobot = robots.get(i);
             Robot nextRobot = robots.get((i + 1) % size);
-            Village currStart = (Village) Controller.topology.getNodes().get(robots.get(i).getItinerary().getStart());
-            Village nextStart = (Village) Controller.topology.getNodes().get(nextRobot.getItinerary().getStart());
-            currDistance = getDistanceThroughPath(steps, currStart, nextStart);
+            currDistance = getDistanceThroughPath(steps, currRobot.getLocation(), nextRobot.getLocation());
             if (currDistance > max) {
                 max = currDistance;
             }
