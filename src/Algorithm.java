@@ -168,25 +168,11 @@ public class Algorithm {
     }
 
     static public double getDistanceThroughPath(List<Point> steps,
-                                                Point start, Village villAfterStart,
-                                                Point end, Village villAfterEnd) {
-        double distance = 0;
-        Village villPreviousStart, villPreviousEnd;
-        if (steps.indexOf(villAfterStart.getLocation()) == 0) {
-            villPreviousStart = Controller.villages.get(steps.get(steps.size() - 1));
-        } else {
-            villPreviousStart = Controller.villages.get(steps.get(steps.indexOf(villAfterStart) - 1));
-        }
-
-        if (steps.indexOf(villAfterEnd.getLocation()) == 0) {
-            villPreviousEnd = Controller.villages.get(steps.get(steps.size() - 1));
-        } else {
-            villPreviousEnd = Controller.villages.get(steps.get(steps.indexOf(villAfterEnd) - 1));
-        }
-
-        return (villPreviousStart.distance(villAfterStart) - villPreviousStart.distance(start))
-                + getDistanceThroughPath(steps, villAfterStart, villPreviousEnd)
-                + (villPreviousEnd.distance(villAfterEnd) - end.distance(villAfterEnd.getLocation()));
+                                                Point start, Village villageAfterStart,
+                                                Point end, Village villageBeforeEnd) {
+        return start.distance(villageAfterStart.getLocation())
+                + getDistanceThroughPath(steps, villageAfterStart, villageBeforeEnd)
+                + villageBeforeEnd.distance(end);
     }
 
     static public Itinerary itineraryAfterShiftingDistanceThroughPath(List<Point> steps, Point start, double distance) {
@@ -225,7 +211,7 @@ public class Algorithm {
             Robot nextRobot = robots.get((i + 1) % size);
             currDistance = getDistanceThroughPath(steps,
                     currRobot.getItinerary().getSpawn(), Controller.villages.get(steps.get(currRobot.getItinerary().getStart())),
-                    nextRobot.getItinerary().getSpawn(), Controller.villages.get(steps.get(nextRobot.getItinerary().getStart())));
+                    nextRobot.getItinerary().getSpawn(), Controller.villages.get(steps.get(currRobot.getItinerary().getStart())));
             if (currDistance > max) {
                 max = currDistance;
             }
