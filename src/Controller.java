@@ -26,6 +26,7 @@ public class Controller implements CommandListener {
     static Map<Point, Village> villages;
     static List<Robot> robots;
     static List<Itinerary> itineraries;
+    static boolean printConsole = true;
 
     int averageMaxTime;
 
@@ -71,6 +72,7 @@ public class Controller implements CommandListener {
 
         robots = new ArrayList<>();
 
+        printConsole = false;
         beforeStartExecution();
         topology.start();
         topology.pause();
@@ -172,8 +174,10 @@ public class Controller implements CommandListener {
                 itineraries.add(0, algorithm.noAlgo());
                 break;
         }
-        System.out.println("Total distance of the itineraries made by " + selectedAlgo + " is "
-                + Algorithm.getItinerariesTotalDistance(itineraries));
+        if (printConsole) {
+            System.out.println("Total distance of the itineraries made by " + selectedAlgo + " is "
+                    + Algorithm.getItinerariesTotalDistance(itineraries));
+        }
     }
 
     public void addVillages(){

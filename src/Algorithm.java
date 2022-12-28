@@ -167,14 +167,6 @@ public class Algorithm {
         return distance;
     }
 
-    static public double getDistanceThroughPath(List<Point> steps,
-                                                Point start, Village villageAfterStart,
-                                                Point end, Village villageBeforeEnd) {
-        return start.distance(villageAfterStart.getLocation())
-                + getDistanceThroughPath(steps, villageAfterStart, villageBeforeEnd)
-                + villageBeforeEnd.distance(end);
-    }
-
     static public Itinerary itineraryAfterShiftingDistanceThroughPath(List<Point> steps, Point start, double distance) {
         boolean noNeedShift = distance == 0;
         int size = steps.size();
@@ -197,26 +189,6 @@ public class Algorithm {
                 (1 - ratio) * curr.getY() + ratio * next.getY());
 
         return new Itinerary(steps, startIndexVillage, spawn);
-    }
-
-    static public double getDistanceBetweenTwoFurthestRobots(List<Point> steps, List<Robot> robots) {
-        if (robots.size() == 1) {
-            return getRoundTotalDistance(steps);
-        }
-        int size = robots.size();
-        double max = 0;
-        double currDistance;
-        for (int i = 0; i < size; i++) {
-            Robot currRobot = robots.get(i);
-            Robot nextRobot = robots.get((i + 1) % size);
-            currDistance = getDistanceThroughPath(steps,
-                    currRobot.getItinerary().getSpawn(), Controller.villages.get(steps.get(currRobot.getItinerary().getStart())),
-                    nextRobot.getItinerary().getSpawn(), Controller.villages.get(steps.get(currRobot.getItinerary().getStart())));
-            if (currDistance > max) {
-                max = currDistance;
-            }
-        }
-        return max;
     }
 
 
