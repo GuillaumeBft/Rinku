@@ -200,9 +200,9 @@ public class Algorithm {
         Point spawnRobot = new Point(Robot.SPAWN_POINT_X, Robot.SPAWN_POINT_Y);
 
         //Juste repartition des points dans l'ordre
-        Itinerary itGeneral = new Itinerary(points, 0);
+        //Itinerary itGeneral = new Itinerary(points, 0);
         //Utilisation d'un vrai algo
-        //Itinerary itGeneral = randomInsertion();
+        Itinerary itGeneral = nearestNeighbor();
 
         List<Point> stepsItGeneral = itGeneral.getSteps();
         List<Point> itRobotSteps;
