@@ -85,6 +85,8 @@ public class Controller implements CommandListener {
         switch (command) {
             case START :
                 beforeStartExecution();
+                //to use, deactivate Village > onClock() > newMail()
+                //mailTestShowTimeAlgo();
                 break;
 
             case ADD_ONE_ROBOT:
@@ -217,5 +219,17 @@ public class Controller implements CommandListener {
             }
             robots.add(robotAdded);
         }
+    }
+
+    public void mailTestShowTimeAlgo(){
+        Village cussac = villages.get(new Point(100, 70));
+        Village croatie = villages.get(new Point(400, 300));
+        Village signy = villages.get(new Point(120, 275));
+        Village pessac = villages.get(new Point(450, 50));
+
+        cussac.postbox.add(new Mail(cussac, croatie, "test time", cussac.getTime()));
+        System.out.println("I'm Cussac I send to Croatie");
+        cussac.postbox.add(new Mail(signy, pessac, "test time", signy.getTime()));
+        System.out.println("I'm Signy I send to Pessac");
     }
 }
