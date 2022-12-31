@@ -20,6 +20,9 @@ On peut supposer que les robots sont initialement placés là où l'algo le souh
 
 Adaptations possibles en fonction des souhaits du binôme (à discuter avec l'enseignant). Une amélioration utile serait de pouvoir connaître la valeur optimale (qui à utiliser un algo de brute force) pour comparer les solutions de vos algorithmes.
 
+## Dépendances
+Le projet utilise la **JDK Amazon Corretto 18**, récupérable [ici](https://docs.aws.amazon.com/corretto/latest/corretto-18-ug/downloads-list.html) ainsi que la bibliothèque JBotSim **io.jbotsim:jbotsim-all:1.2.0** récupérable sur les dépots Maven.
+
 ## Utilisation
 En lançant le projet, une interface apparaît avec 5 villages prédéfinis, vous pouvez démarrer l'exécution en ouvrant le menu contextuel avec un clic droit sur un espace vide puis en sélectionnant **Start execution**.
 
