@@ -48,7 +48,6 @@ public class Village extends Node {
         Village randomElement = potentialDestinations.get(rand.nextInt(potentialDestinations.size()));
         postbox.add(new Mail(this, randomElement, "Hello, my name is Brandom, I'm from " + name
                 + " and I want to wizz my crush Randomia who lives in " + (randomElement).getName(), getTime()));
-        //System.out.println("Je suis " + name + " j'envoie a : " + (randomElement).getName());
     }
 
     @Override

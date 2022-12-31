@@ -37,7 +37,6 @@ public class Robot extends WaypointNode {
     public void onStart() {
         super.setSpeed(SPEED);
         startVisitRound();
-        //System.out.println("Robot n°" + getID() + " my itinerary is : " + itinerary.toString());
     }
 
     public void startVisitRound(){
@@ -91,7 +90,8 @@ public class Robot extends WaypointNode {
             for (Mail m : backpack) {
                 if (m.receiver.equals(current)) {
                     send(current, new Message(m));
-                    System.out.println("Message from " + m.sender.getName() + " to " + m.receiver.getName() + " sent in " + (getTime() - m.time));
+                    System.out.println("Message from " + m.sender.getName() + " to " + m.receiver.getName()
+                            + " sent in " + (getTime() - m.time) + " ticks");
                 }
             }
             backpack = backpack.stream().filter(mail -> !mail.receiver.equals(current)).collect(Collectors.toList());
